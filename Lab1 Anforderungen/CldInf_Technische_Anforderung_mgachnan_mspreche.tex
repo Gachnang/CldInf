@@ -16,6 +16,8 @@
 \usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage{ragged2e}
+\usepackage{framed}
+\usepackage{quoting}
 % remove current style and use fancyplain
 \pagestyle{fancyplain}
 \fancyhf{}
@@ -28,6 +30,7 @@
 \rfoot{Seite \thepage \hspace{1pt} von \pageref{LastPage}}
 % define some colors
 \definecolor{lightgray}{rgb}{.95,.95,.95}
+\definecolor{shadecolor}{rgb}{.95,.95,.95}
 \definecolor{darkgray}{rgb}{.4,.4,.4}
 \definecolor{purple}{rgb}{0.65, 0.12, 0.82}
 % set color and font of ''\url''
@@ -43,6 +46,15 @@
 \def\grayspace{\hspace{0pt minus \fboxsep}}
 % add ''\code'' to highligth single code lines
 %\newcommand{\code}[1]{\wrapcolorbox[lightgray]{\ttfamily{#1}}}
+
+% add ''\shadedquotation'' to highligth quoates
+\newenvironment{shadedquotation}
+ {\begin{shaded*}
+  \quoting[leftmargin=0pt, vskip=0pt]
+ }
+ {\endquoting
+ \end{shaded*}
+}
 
 % define ''JavaScript'' as a language for enviroment ''lstlisting''
 \lstdefinelanguage{JavaScript}{
@@ -104,9 +116,9 @@
 \section{Aufgabe 1}
 \label{sec:Aufgabe-1}
 
-\begin{quote}
+\begin{shadedquotation}
   Welches sind die Argumente pro / contra Cloud im Allgemeinen aus Sicht des Endkunden sowie aus Sicht des Providers.
-\end{quote}
+\end{shadedquotation}
 
 \par\medskip
 
@@ -150,21 +162,23 @@
   \hline
 \end{tabular}
 
+\par\medskip
+
 \section{Aufgabe 2}
 \label{sec:Aufgabe-2}
 
-\begin{quote}
+\begin{shadedquotation}
   Vergleichen Sie die beiden Varianten ''Public'' vs. ''Private'' Cloud.
-\end{quote}
+\end{shadedquotation}
 
 \par\medskip
 
 \section{Aufgabe 3}
 \label{sec:Aufgabe-3}
 
-\begin{quote}
+\begin{shadedquotation}
   Nennen Sie Beispiele oder Use-cases, die sich besonders für die Public oder Private Cloud eignen.
-\end{quote}
+\end{shadedquotation}
 
 \subsection{Applikationsebene}
 \label{subsec:Aufgabe-3_Applikationsebene}
@@ -176,8 +190,8 @@
 \label{subsec:Aufgabe-3_Infrastrukturebene}
 
 \section{Aufgabe 4}
-
-\begin{quote}
+\label{sec:Aufgabe-4}
+\begin{shadedquotation}
   Sie möchten eine Startup gründen, welche Cloud-Services anbietet. Um gegenüber weltweiten
   Anbietern einen Konkurrenzvorteil zu haben, wollen Sie sämtliche Leistungen in der Schweiz
   produzieren und auch alle Daten sicher in einem Bunker in den Bergen lagern. Sie beginnen mit
@@ -200,7 +214,7 @@
   Verwenden Sie die folgende Tabelle. Als Spalten verwenden Sie wichtige Cloud Eigenschaften (die für
   alle Bereiche gelten). Erweitern Sie die Tabelle um solche allgemein gültigen Eigenschaften. Dann
   beschreiben Sie die Auswirkungen dieser Eigenschaften auf Applikationen, Netz, Compute und Storage.
-\end{quote}
+\end{shadedquotation}
 
 \begin{tabular}{ |p{2cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|  }
   \hline
