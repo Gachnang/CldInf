@@ -1,0 +1,775 @@
+\documentclass[11pt,titlepage]{article}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{url}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+% remove current style and use fancyplain
+\pagestyle{fancyplain}
+\fancyhf{}
+% remove rule/lines as well
+\renewcommand{\headrulewidth}{0pt} 
+\renewcommand{\footrulewidth}{0pt}
+% set papersize, magin and footersize
+\geometry{a4paper,portrait,left={3cm},right={3cm},top={2cm},bottom={1cm},includefoot,foot={1cm}}
+% set footer
+\rfoot{Seite \thepage \hspace{1pt} von \pageref{LastPage}}
+% define some colors
+\definecolor{lightgray}{rgb}{.95,.95,.95}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+% set color and font of ''\url''
+\renewcommand\UrlFont{\color{blue}\rmfamily\itshape}
+% colorbox which can wrap lines
+\newcommand\code[1]{\codehelp#1 \relax\relax}
+\def\codehelp#1 #2\relax{\allowbreak\grayspace\codecolor{#1}\ifx\relax#2\else
+ \codehelp#2\relax\fi}
+\newcommand\codecolor[1]{\colorbox{lightgray}{\textcolor{black}{%
+  \ttfamily\mystrut\smash{\detokenize{#1}}}}}
+\def\mystrut{\rule[\dimexpr-\dp\strutbox+\fboxsep]{0pt}{%
+ \dimexpr\normalbaselineskip-2\fboxsep}}
+\def\grayspace{\hspace{0pt minus \fboxsep}}
+% add ''\code'' to highligth single code lines
+%\newcommand{\code}[1]{\wrapcolorbox[lightgray]{\ttfamily{#1}}}
+
+% define ''JavaScript'' as a language for enviroment ''lstlisting''
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]''
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+% set title
+\title{Swisscom}
+\author{Markus Gachnang und Martin Sprecher}
+\date{\today{}}
+% set parindent to 0px to remove it (Einrücken von neuer Absatz)
+\setlength\parindent{0pt}
+% ---------------------------------------------------------------------------
+% begin Document 
+\begin{document}
+% set font
+\sffamily
+% print title
+\maketitle
+\newpage
+% print index
+\tableofcontents{}
+\setcounter{page}{1}
+\newpage
+% linksbündig
+\RaggedRight
+% kein brechen von Wörtern
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\section{Hands-On}
+\label{sec:hands-on}
+
+\subsection{Registrierung}
+\label{sec:registrierung}
+
+Wir haben uns unter \url{https://developer.swisscom.com} registriert (\autoref{fig:register_1}), anschliessen landet man auf der Web-Console.
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.85\textwidth]{images/HandsOn/register_1.png}
+    \caption{Swisscom ''Sign up''}
+    \label{fig:register_1}
+  \end{center}
+\end{figure}
+Hier werden alle Services verwaltet, doch bevor wir einen Service einrichten dürfen, müssen wir uns eine Organisation einrichten.\par\medskip 
+Dabei wird man Schritt für Schritt angeleitet und die verschiedenen Aspekte der Organisation wird einem kurz und bündig erlautert (\autoref{fig:register_2}).
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.85\textwidth]{images/HandsOn/register_2.png}
+    \caption{Organisation erstellen}
+    \label{fig:register_2}
+  \end{center}
+\end{figure}
+
+\begin{itemize}
+    \item Wir wählen uns einen Namen für die Organisation. 
+    \item Wir richten uns ''Spaces'' ein. Dieses dienen der unterteilung der Organisation. Hier können wir zum Beispiel die verschiedenen Stages einer Applikationsumgebung wie ''Development'', ''Staging'' und ''Production'' wählen.
+    \item Nun können wir unsere Apps und Service einrichten.
+\end{itemize}
+
+\subsection{HelloWorld}
+\label{sec:helloworld}
+
+Wir versuchen zuerst eine einfache ''HelloWorld'' App einzurichten. Dazu erstellen wir uns ein kleines eigenes NodeJs-Projekt.
+
+\begin{lstlisting}[language=JavaScript, caption=package.json, captionpos=t]
+  {
+    "name": "helloswisscom",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "start": "node ./index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "express": "4.17.1"
+    }
+  }
+\end{lstlisting}
+
+Bei ''package.json'' ist vorallem wichtig, dass der Script ''start'' definiert ist, denn dieser wird in der Cloud dann ausgeführt. 
+
+\begin{lstlisting}[language=JavaScript, caption=index.js, captionpos=t]
+  var express = require('express');
+  var app = express();
+
+  var port = parseInt(process.env.PORT, 10) || 80;
+
+  app.get('/', function (req, res) {
+    res.send('Hello Swisscom!');
+  });
+
+
+  app.listen(port, function () {
+    console.log('Listen on port ' + port);
+  });
+\end{lstlisting}
+
+Wir starten lediglich einen NodeJs-Server und geben immer ''Hello Swisscom!'' zurück, wenn Root ''/'' aufgerufen wird.\par\medskip 
+Diese beiden Dateien packen wir nun in ein Zip-Archiv und sind somit bereit, die App einzurichten.\par\medskip 
+
+Auf \url{https://developer.swisscom.com} eingeloggt erstellen wir nun eine App.
+
+\begin{figure}[H]
+  \caption{Wizard}
+  \begin{subfigure}{0.48\textwidth}
+  \includegraphics[width=0.9\linewidth]{images/HandsOn/pushApp_1.png} 
+  \caption{App-Art wählen}
+  \label{fig:pushApp_1}
+  \end{subfigure}
+  \begin{subfigure}{0.48\textwidth}
+  \includegraphics[width=0.9\linewidth]{images/HandsOn/pushApp_2.png}
+  \caption{Voreinstellungen}
+  \label{fig:pushApp_2}
+  \end{subfigure}
+\end{figure}
+Wir wählen ''Push App'', wobei sich ein Wizard (\autoref{fig:pushApp_1}) öffnet, bei welchen wir wählen können, 
+was für eine Applikation wir einrichten möchten. Für unser Beispiel nehmen wir ''NodeJs''.
+Anschliessend (\autoref{fig:pushApp_2}) geben wir der App einen Namen und wählen unser zuvor erstelles Zip-Archiv aus.
+Hier kann man auch weitere Einstellungen vornehmen, zum Beispiel wählt man auch eine URL, um die App im Browser öffnen zu können.\\
+Danach sieht mal ein Log über den Verlauf der Inizialisierung und kann bei Erfolg die Übersicht (\autoref{fig:pushApp_3}) der App öffnen. 
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/HandsOn/pushApp_3.png}
+    \caption{App-Übersicht}
+    \label{fig:pushApp_3}
+  \end{center}
+\end{figure}
+
+\begin{wrapfigure}[2]{HL}{0.4\textwidth}
+  \includegraphics[width=0.9\linewidth]{images/HandsOn/pushApp_4.png}
+  \caption{Im Browser}
+  \label{fig:pushApp_4}
+\end{wrapfigure}
+Wenn wir nun die ausgewählt URL öffnen werden wir mit einem ''Hello Swisscom!'' begrüsst (\autoref{fig:pushApp_4}).
+\pagebreak
+
+\section{Analyse: OSSM-Definition}
+\label{sec:analyse}
+
+\subsection{ON Demand}
+Die Server sind bereits vorbereitet und können jederzeit vom Anwender gestartet werden
+\begin{itemize}
+	\item Swisscom ist Container-Basiert und bietet damit die Möglichkeit ohne (lange)
+	Wartezeit sofort eine Applikation zu starten.
+\end{itemize}
+\subsection{Self-Service}
+Der Benutzer wählt, welche Applikation er Wann, Wie und mit welchen Ressourcen starten will.
+\begin{itemize}
+	\item Auch hier ist das Container-Design von Swisscom die Antwort. Der User wählt aus einer Vielzahl von Programmiersprachen, Datenbanken und vorbereiteten Applikationen diese aus, die er benötigt und kann sie mit wenigen Klicks deployen.
+	\item Wenn das Bedürfnis nach mehr Ressourcen besteht, kann man mit ein paar Mausklicks diese Ressourcen anfordern.
+\end{itemize}
+\subsection{Scaleable}
+Der Benutzer kann die Applikationsspezifikationen selbst auswählen und bei Bedarf anpassen, ohne dass er auf den Anbieter warten muss.
+\begin{itemize}
+	\item Bei Swisscom kann mit dem Abonnement-Plan ausgewählt werden, welche Leistungen die Cloudlösung bieten soll, wenn nötig, kann man einzelne Aspekte (Speicher, Rechenleistung usw.) anpassen.
+\end{itemize}
+\begin{figure}[H]
+	\caption{Create Apps and Services}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=0.8\linewidth, height=\textheight, keepaspectratio]{images/OSSM/Apps.png} 
+		\caption{Push App}
+		\label{fig:pushApp}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=0.8\linewidth, height=\textheight, keepaspectratio]{images/OSSM/Services.png}
+		\caption{Create a Serivce}
+		\label{fig:createService}
+	\end{subfigure}
+\end{figure}
+\subsection{Measurable}
+Der Nutzer kann einsehen, welche Dienste aktiviert sind.
+\begin{itemize}
+	\item Bei jedem App/Service kann man jederzeit einsehen wie die Spezifikationen der Lösung und wie hoch die Limite des jeweils gewählten Abos ist.
+\end{itemize}
+
+\section{Konzept: Cloud Computing Patterns}
+\label{sec:konzept}
+
+\subsection{Process Offering Pattern: Execution Environment}
+Die Swisscom nutzt verschiedene Dienste um die Anwendungen auszuführen. Allgemeine Funktionen werden in einer Ausführungsumgebung zusammengefasst, die Funktionen in Plattformbibliotheken bereitstellt, die in benutzerdefinierten Anwendungsimplementierungen und in Form der Middleware verwendet werden können. Die Umgebung führt somit benutzerdefinierte Anwendungskomponenten aus und bietet allgemeine Funktionen für Datenspeicher, Kommunikation usw.
+Unserer Meinung nach realisiert die Swisscom ein «Execution Environment» Angebot.
+
+\subsection{Workload Pattern}
+Bei Swisscom kann man als User selbst die Skalierung vornehmen oder eine automatische Skalierung konfigurieren. Dadurch werden die einzelnen Container und Applikationen sehr flexibel.
+\begin{center}
+	\centering
+	\includegraphics[width=0.7\linewidth]{images/Patterns/scaling}
+	\label{fig:scaling}
+\end{center}
+\begin{center}
+	\centering
+	\includegraphics[width=0.6\linewidth]{images/Patterns/HelloWorldDiagram}
+	\label{fig:helloworlddiagram}
+\end{center}
+
+
+\section{Self-Information}
+\label{sec:selfInformation}
+Nun da wir wissen, wie man die simpeste aller Anwendungen zum laufen bekommt, versuchen wir uns an der ''Self Information-Applikation'', 
+welche uns verschiedene Information zu unserer Cloud liefert.
+Die Applikation finden wir unter \url{https://github.com/HSR-Cloud/SelfInformation}.\par\medskip
+
+Die Applikation auf der Cloud zu builden ist eine schlechte Idee, da dies viel Memory und CPU verbraucht. 
+Deshalb clonen wird das Repository und führen \code{./mvnw.cmd clean package} (auf Windows) aus. 
+Dies validiert, compiliert und paketiert den Sourcecode, so dass wir im Unterordner 
+''target'' die compilierte Form der Applikation erhalten. Wir testen die App indem wir sie mit \code{java -jar .\\target\\self-information-0.0.1-SNAPSHOT.jar} starten.\par\medskip
+
+\begin{wrapfigure}[19]{HL}{0.38\textwidth}
+  \includegraphics[width=0.9\linewidth]{images/SelfInformation/spaceSettings.png}
+  \caption{Space Settings}
+  \label{fig:spaceSettings}
+\end{wrapfigure}
+
+Dieses Mal benützen wir nicht die Web-Console, sondern das ''Cloud Foundry CLI'', welche wir uns bereits heruntergeladen und installiert haben.
+Würden wir es über die Web-Console machen, wird ein Zip-Archiv mit dem Source erwartet, welches dann auf der Cloud gebuildet wird.
+Das CLI erlaubt uns mehr Kontrolle über die Einrichtung unserer App. Die Informationen, die wir dafür brauchen, können wir aus der ''Space Settings'' herauslesen (\autoref{fig:spaceSettings}).
+
+\begin{itemize}
+  \item Wir verbinden und mit \code{cf login -a <URL> -u <Benutzername>}, wobei unser Passwort abgefragt wird.
+  \item Wir wählen unseren Space mit \code{cf target -o <Org-Name> -s <Space-Name>}
+\end{itemize}
+Nun sind wir verbunden und bereiten uns auf den ''push'' vor.\\ 
+(\url{https://cli.cloudfoundry.org/en-US/cf/push.html})\par\medskip
+
+Ohne Angabe eines BuildPacks  werden alle Buildpacks heruntergeladen und es wird versucht, das geeignete zu finden.
+Dies erhöt wieder den Memory, CPU und Speicher verbrauch. Deshlab geben wir das BuildPack für Java/Spring an mit \code{-b https://github.com/cloudfoundry/java-buildpack.git}.\par\medskip
+Beim ersten Versuch haben wir die Fehlermeldung bekomment, dass 225MB RAM zuwenig ist und 600MB bereits nötig sind.
+Deshalb geben wir \code{-m 600M} an.
+
+\begin{itemize}
+  \item Wir pushen die App mit \code{cf push SelfInformation -p .\target\self-information-0.0.1-SNAPSHOT.jar -b https://github.com/cloudfoundry/java-buildpack.git -m 600m}
+\end{itemize}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/SelfInformation/cfPush.png}
+    \caption{App-Übersicht}
+    \label{fig:cfPush in PowerShell}
+  \end{center}
+\end{figure}
+
+\section{Analyse: Preisrecherche}
+\label{sec:analysePreisrecherche}
+\subsection{Welche Preismodelle stehen zur Verfügung?}
+Die Swisscom bietet nur das Preismodel Pay-per-Use an.
+\subsection{Wie kann bezahlt werden?}
+Mit Kreditkarte von Mastercard oder Visa
+\subsection{Gibt es ein Gratis-Angebot für Einsteiger?}
+Ja, bei der Swisscom gibt es für die ersten 3 Monate eine Free Trial Period. Bei dieser sind die ersten CHF 100 pro Monat für 3 Monate gratis. Darüber hinaus bezogene Leistungen werden normal verrechnet.
+\subsection{Welche Ressourcen werden abgerechnet?}
+Die maximale zugewiesene Leistung wird pro Stunde als Grundlage für die Berechnung des Stundenpreises für jede App oder Service verwendet. 
+Gemäss Swisscom gibt es keine versteckten Kosten.
+\subsection{Was kostet Sie das Hosting der Anwendung aus der Ausgangslage?}
+Bei Swisscom ist die Anzahl CPU leider nicht definierbar. Die minimale Disk Space ist 1GB und das maximum ist limitiert auf 5GB, aber es gibt keinen Preisunterschied zwischen 1 GB und 5 GB. Das Datenvolumen ist unbegrenzt. Mit diesen Einschränkungen kommen wir auf einen Preis von CHF 96/Monat.
+\subsection{Vergleichen Sie das im vorherigen Schritt gefundene Angebot mit Amazon Web Services (AWS) Elastic Compute Cloud (EC2) anhand des AWS-Preiskalkulators. Welche Schwierigkeiten treten bei den Vergleich auf (z.B. unterschiedliche Servicemodelle oder Qualitätseigenschaften, versteckte Kosten, widersprüchliche Angaben)?}
+Amazon hat, im Gegensatz zu Swisscom, sehr detaillierte Angaben für Ihre Dienste. Swisscom hat den Vorteil, dass das Abrechnen simpel und transparent ist. Beim Push einer App oder eines Services sieht man sofort was die Erwarteten monatlichen Gebühren sein werden. Der Nachteil ist jedoch, dass man die maximal zugewiesene Leistung pro Stunde hochgerechnet bezahlt, auch wenn man die Leistung nach 1 Sekunde runterstellen oder die App/Service stoppen würde.
+
+\section{Analyse: Preisvergleich eigenes Hosting, IaaS und PaaS}
+\label{sec:analysePreisvergleich}
+
+Preise in CHF
+\begin{center}
+	\begin{tabular}{|l|c|c|c|c|}
+		\hline
+		& Eigener Server & Hostpoint & Amazon EC2 & Swisscom \\ \hline
+		Beschaffungskosten    & 2000           & 0         & 0          & 0        \\ \hline
+		Grundbetriebskosten   & 500 (Strom)    & 3360      & 3783       & 5088     \\ \hline
+		Administrationskosten & 45000          & 40000     & 30000      & 30000    \\ \hline
+		Total                 & 47500          & 43360     & 33783      & 35088    \\ \hline
+	\end{tabular}
+\end{center}
+\subsection{Welche der vier Varianten scheint am kostengünstigsten zu sein?}
+Die Amazon schneidet am günstigten ab, was unter anderem am schwachen Dollar liegt. Bei der Rechnung sollte man jedoch aufpassen, weil es bei Amazon noch versteckte Kosten geben könnte, wobei die Swisscom da keine hat. Bei der Swisscom wird der Internetverkehr nicht extra verrechnet, was bei Amazon nicht klar ersichtlich war bei der Berechnung. Die traditionellen Lösungen sind wegen hohen Administrationskosten nicht wettbewerbsfähig in diesem Szenario.
+\subsection{Auf welche Schwierigkeiten stossen Sie bei diesem Vergleich?}
+Die Betreiber definieren Ihre Kosten nicht genau gleich. Die versteckten Kosten könnten übersehen werden und ausserdem sind die Administrationskosten nur wage geschätzt. Bei Amazon ist der Standort ein Faktor in der Preisberechnung. Ausserdem können sich die Wechselkurse über die Zeit verändern und haben dadurch ein gewisses Risiko in der Preisberechnung, falls man nicht alles im voraus zahlt.
+\subsection{Wie schätzen Sie die Preise für Cloud Computing insgesamt ein?}
+Die traditionellen Lösungen haben, wie bereits oben genannt, höhere Administrationskosten. Cloud Computing ist darauf ausgelegt, von Anfang an möglichst einfach in der Handhabung zu sein.
+\subsection{Sollte man den Cloud-Anbieter rein nach gebotener Funktionalität und Preis auswählen – oder gibt es weitere Entscheidungskriterien?}
+Man muss auch auf andere Faktoren achten, wie zum Beispiel Datenschutz, gesetzliche Grundlagen und ausserdem könnten Serverstandorte und Umgebungen auch wichtig sein.
+\subsection{Würden Sie den Cloud-Provider einsetzen für das produktive Deployment einer solchen Enterprise Application oder bei klassischem Hosting bleiben? Warum?}
+Für eine solche Applikation macht es schon Sinn in die Cloud zu gehen, da die Unterhaltskosten wesentlich tiefer sind. Deshalb gehen auch viele Unternehmen vermehrt zu Cloud Anbietern.
+
+\section{Analyse: Service Level Agreements (SLAs)}
+\label{sec:analyseSLAs}
+\subsection{Gibt es ein oder mehrere Service Level Objectives (SLOs)?}
+Bezüglich der versprochenen Verfügbarkeit haben wir nichts bei Swisscom gefunden. Ein Ausfall werde gemäss Swisscom von ihnen automatisch erkannt und die Dauer des Ausfalls wird von Swisscom selbst automatisch aufgenommen. Workarounds werden als vorübergehende Korrektur eines Ausfalls angesehen.
+Ausgenommen sind:
+\begin{itemize}
+	\item angekündigte Wartungen
+	\item Angriffe von ausserhalb (DDOS)
+	\item Selbstverschulden des Users oder seiner Kunden
+	\item Softwarefehler des Users oder 3.Party Software
+	\item Serviceunterbrechung infolge Fehlverhaltens des Users
+	\item Folgen einer Naturkatastrophe wie Erdbeben, Überflutung, Erdrutsch etc.
+\end{itemize}
+\subsection{Werden die fünf „Questions to Ask“ (vgl. Vorlesungsfolien) aus dem SLA White Paper von Dimension Data5 beantwortet?}
+\subsubsection{How are uptime and availability calculated?}
+In der SLA der Swisscom ist nur die Formel zur Berechnung der Availability gegeben, aber es ist nicht definiert ob dies pro Monat/Jahr oder totale Laufzeit gilt.
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/SLA/Availability}
+	\caption{Service Availability}
+	\label{fig:availability}
+\end{figure}
+\subsubsection{What should be in place for me to be covered?}
+Hierfür gibt es keine besonderen Angaben.
+\subsubsection{What about performance degradation as opposed to hard downtime?}
+\label{sec:performancedegradation}
+For Performance, the measurement criteria, measurement procedure, preparation of the report and the applicable conditions are agreed upon individually in the Service Description or in the contract.
+\subsubsection{What are the penalties for SLA violations?}
+siehe \autoref{sec:performancedegradation}
+\subsubsection{What do I have to do to request a credit?}
+siehe \autoref{sec:performancedegradation}
+\subsection{Fehlen aus Ihrer Sicht im White Paper von Dimension Data bestimmte SLA-Evaluationskriterien, würden Sie also andere Fragen stellen?}
+\begin{itemize}
+	\item Was ist der Zeitraum in welcher ein Ausfall gemeldet werden muss, bzw. muss er überhaupt gemeldet werden, da die Swisscom scheinbar diese automatisch erkennt.
+	\item Falls die Swisscom einen Ausfall erkennt, ohne dass der User es bemerkt, gibt die Swisscom trotzdem Schadenersatz?
+\end{itemize}
+\subsection{Schätzen Sie Existenz und Einhaltung von SLAs als wichtig ein}
+\subsubsection{bei der Entscheidung, mit einer Anwendung in die Cloud zu gehen}
+Wir denken SLA sind bei kommerzieller Nutzung wichtig, damit man von Providern nicht einfach betrogen werden kann.
+\subsubsection{einen Provider auszuwählen? Wenn Sie unsicher sind in Ihrer Einschätzung (also in der Meinungsbildung), können Sie gerne miteinander diskutieren sowie Web-Quellen hinzuziehen.}
+Bei der Providerauswahl für kommerzielle Nutzung sind die SLAs ein wichtiger Entscheidungsfaktor, da die Qualität der SLAs auf die Qualität des Providers zurückschliessen lässt. Falls der Provider gute und faire SLAs hat und nach einigen Jahren noch existiert, zeigt uns dies, dass er diese auch Einhalten kann.
+\subsection{Gibt es neben den SLAs weitere Dokumente, die man als zukünftiger Cloud-Consumer sorgfältig lesen sollte (zumindest bei kommerzieller Nutzung)? Tipps: Denken Sie an Data Privacy, Informationen zum Gerichtsstand, Standorte der Data Center, etc. Diese gesammelten Informationen können Sie auch in der Aufgabe «Analyse: Security Features und Assessment» wiederverwenden.}
+\begin{itemize}
+	\item \href{http://documents.swisscom.com/topic/0000012-Legal/Documents/AGB/leg0002_new-en.pdf}{General Terms and Conditions}
+	\item \href{https://developer.swisscom.com/static/media/TermsAndConditionsForOnlineAccessAndUse-en.2c434fc7.pdf}{Terms and Conditions for Online Access and Use of Cloud Services}
+	\item \href{https://www.swisscom.ch/en/residential/legal-information/online-privacy.html}{Privacy Policy}
+	\item \href{http://documents.swisscom.com/product/filestore/lib/1b918123-2b87-4ef0-b270-d7ff329e8163/APC_DPA_EUGDPR.pdf}{Contracted Data Processing Agreement under the EU GDPR}
+	
+\end{itemize}
+
+\section{Hands-On: Lakeside Mutual DDD-Sample-Application}
+\label{sec:handsOnLakesideMutual}
+
+Nach der einfachen, fast schon trivialen Self Information-Applikation wollen wir nun eine etwas grössere und komplexere Anwendung deployen: die Lakeside Mutual DDD-Sample-Applikation.
+Auf GitHub finden wir das Lakeside Mutual Repository (\url{https://github.com/Microservice-API-Patterns/LakesideMutual})\par\medskip.
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/overview-diagram.png}
+    \caption{Architecture Overview}
+    \label{fig:cflsmArchOverview}
+  \end{center}
+\end{figure}
+
+Swisscom kann mit einem Docker-Compose-File leider nichts anfangen, dies wäre natürlich das einfachte gewesen, einfach denn Source hochzuladen.
+Eine Alternative wäre es, jeder Service als Java-Applikation hochzuladen. 
+Dies bringt aber weite nachteile, denn einige haben LoadBalancer (ngnix) welche wieder einzeln deployed werden müssen. 
+Ein riesen Aufwand, wenn man wirklich alle getrennt haben will.
+
+Wir haben auch die Möglichkeit, einzelne Docker-Container zu definieren, können hier aber keinen Source hochladen. 
+
+Anstelle von ''Docker-Compose'' haben wir ein ''manisfest.yml'', welches jedoch völlig anderst aussieht. 
+Dieses definiert die Applikationen wie bei Docker-Compose, relaubt jedoch viele Funktionalitäten wie Abhänigkeiten nicht. 
+Zum Beispiel Anstelle von Abhänigkeiten müssen wir die Apps in der richtigen Reihenfolge definieren.
+Für die ''network-policy'' haben wir keine Information gefunden, wie man diese im Manifest definiert, müssen diese also als einfache Befehle abschicken.
+
+\begin{itemize}
+  \item Wir müssen lokal jedes Image builden
+  \item Die Images auf Docker-Hup hochladen
+  \item Ein manisfest.yml generieren
+\end{itemize}
+
+Dafür haben wir ein Script definiert, um uns etwas Arbeit abzunehmen: \url{https://gitlab.gachnang.org/gachnang/cloud/blob/master/LakesideMutual.bat}
+\par\medskip
+Die Dockerfiles mussten ein klein wenig abgeändert werden, damit Kubernetes wieder nicht unterstützt wird, da wir kein Kubernetes haben...
+Wir haben in einigen Dockerfiles in der Zeile 6 \code{--mount=type=cache,target=/root/.m2} entfernen müssen.
+
+Nach dem erfolgreichem Durchlaufen des Scripts haben wir die Apps am laufen:
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/Developer Console.png}
+    \caption{Laufende Apps}
+    \label{fig:cflsmResult}
+  \end{center}
+\end{figure}
+
+So wie wir es momentan gemacht haben, haben alle MicroServices eine öffentöiche URL ''*.scapp.io'' und sind Apps. 
+Man unterscheided zwischen Apps und Services. Apps sind öffentlich erreichbar und Services eben nicht.
+\par\medskip
+Ausserdem können wir nach aussen keine spezifischen Ports setzen. CloudFoundry würde dies zwar unterstützen, Swisscom aber nicht. 
+Wir haben lediglich port 80 zur verfügung. Auch Port 443 wird automatisch mit SSL versehen und steht uns nicht zur verfügung.
+\par\medskip
+HTTP-Protocolle funktioneren alle einwandfrei, jedoch musste man für die TCP-Verbindungen Routes einrichten indem man diese per Console definiert:
+\code{cf add-network-policy risk-management-server --destination-app policy-management-backend --protocol tcp --port 61613}
+\par\medskip
+Leider funktionieren drei Apps nicht: 
+\begin{itemize}
+  \item ''customer-management-backend'' und ''customer-self-service-backend'' melden entweder ''403 Access denied'' oder ''405 Method Not Allowed'' und geben keine weiteren informationen... 
+  \item ''policy-management-frontend'' versucht ''localhost:8090'' vom Client aufzurufen, obwohl enviroment \code{VUE_APP_POLICY_MANAGEMENT_BACKEND: http://policy-management-backend.scapp.io} gesetzt ist.
+\end{itemize}
+
+Nach etlichem Untersuchen, Versuchen und Herumpröbeln konnten wir diese Apps einfach nicht zum laufen bringen (>12 Stunden!).
+Leider handelt es sich bei diesen auch um essentziell wichtige Apps, die das Ausführen der anderen Apps beeinträchtigt.
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/SpringBootAdmin.png}
+    \caption{SpringBootAdmin}
+    \label{fig:cflsmSpringBootAdmin}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/CustomerSelf-Service.png}
+    \caption{Customer Self-Service}
+    \label{fig:cflsmCustomerSelfService}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/CustomerManagement.png}
+    \caption{Customer Management}
+    \label{fig:cflsmCustomerManagement}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/PolicyManagement.png}
+    \caption{Policy Management}
+    \label{fig:cflsmPolicyManagement}
+  \end{center}
+\end{figure}
+
+\section{Hands-On: Lakeside Mutual erweitert um Persistence}
+\label{sec:handsOnLakesideMutualPersistence}
+
+Um nun Lakeside Mutual um Persistence zu erweitern, benötigen wir eine Datenbank. Swisscom unterstürtzt MongoDb, MariaDb und MySql.
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/CreateService1.png}
+    \caption{Services}
+    \label{fig:cflsmCreateService1}
+  \end{center}
+\end{figure}
+
+Für MongoDb und MySql muss man zuvor einen Datenbank-Cluster einrichten. Der günstigste ist 87 CHF/Monat. 
+Danach können gratis Datenbanken hinzugefügt werden. Die Maximalanzahl ist durch den Plan des Clusters bestimmt.
+
+MariaDb benötigt kein solchen Cluster und kostet nur 6 CHF/Monat, weshalb wir uns für diese Datenbank entscheiden.
+
+Nach dem erstellen des Services weisen wir den Apps, welche gebrauch von der Datenbank machen sollen, den Service zu:
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/CreateService2.png}
+    \caption{Service zuweisen}
+    \label{fig:cflsmCreateService2}
+  \end{center}
+\end{figure}
+
+Nun benötigt man auch noch die Logindaten. Unter den Einstellungen der Datenbank kann man einen ''Servicekey'' erstellen.
+
+Als Ergebnis bekommt man ein Json mit allen relevanten Daten für die Verbindung zur Datenbank.
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/CreateService3.png}
+    \caption{Servicekey erstellen}
+    \label{fig:cflsmCreateService3}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/CreateService4.png}
+    \caption{Servicekey}
+    \label{fig:cflsmCreateService4}
+  \end{center}
+\end{figure}
+
+Nun müssen wir die App konfigurieren.
+
+In der Datei \code{customer-core\src\main\resources} füllen wir nun die Logindaten ein und definieren \code{spring.jpa.hibernate.ddl-auto=update}.
+Zusätzlich ändern wir den Treiber auf \code{spring.datasource.driverClassName = org.mariadb.jdbc.Driver}, definieren den dialect mit \code{spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL55Dialect} und fügen unter \code{customer-core\pom.xml} 
+die dependencie hinzu:
+
+\begin{lstlisting}[language=xml, caption=pom.xml, captionpos=t]
+<dependency>
+  <groupId>org.mariadb.jdbc</groupId>
+  <artifactId>mariadb-java-client</artifactId>
+  <version>1.5.7</version>
+</dependency>
+\end{lstlisting}
+
+Weil wir Docker gebraucht haben, müssen wir das Image neu machen und die App neu starten.
+
+Dies können wir nun für jede App machen, die diese Datenbank brauchen soll, jede bekommt eine eigene Datenbank.
+
+
+Um nun die Datenbank ansehen zu können, müssen wir zuerst SSH konfigurieren, da die Datenbank von aussen nicht erreichbar ist:
+
+Mit \code{cf enable-ssh customer-core} erlauben wir SSH und mit \code{cf ssh -L 63306:galera-service.service.consul:3306 customer-core} tunneln wir unseren lokalen Port 63306 auf den port der Datenbank.
+Mit unserem Client (HeidiSql) verbinden wir uns nun mit dem Benutzername und Passwort des Servicekeys auf localhost:63306.
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{images/LakesideMutual/CreateService5.png}
+    \caption{HeidiSql}
+    \label{fig:cflsmCreateService5}
+  \end{center}
+\end{figure}
+
+Wir sehen, dass die Datenbank erfolgreich gefüllt wurde und somit alles geklappt hat, hurra!
+
+\section{Konzept: Twelve-Factor Apps}
+\label{sec:konzeptTwelveFactorApps}
+
+Die ''Twelve-Factor App'' ist eine Methode, eine App als ''software-as-a-service'' zu realisieren. Befolgt man diese Schritte, sollte das deployen der App in die Cloud kein Problem darstellen.
+\par\medskip
+Wir haben im EPJ eine WebApplikation ''Fragebögeli'' realisiert, welches dem Benutzer erlaubt, Fragebogen zu erstellen und diese von anderen Benutzern ausfüllen zu lassen.
+Diese Arbeit wurde gezielt als Web-Applikation realisiert und sollte bereits möglichst viele dieser Schritte erfüllt haben.
+Der Code für diese Arbeit befindet sich auf \url{https://gitlab.dev.ifs.hsr.ch/epj/epj-2019-fs/frageboegeli/frageboegeli}.
+
+\subsection{I Codebase}
+\label{sec:twelveCodebase}
+
+Das Project wurde auf einem Version-Controll System gehostet und darauf erarbeitet. 
+Bei jedem Push werden die Tests im CI durchgelaufen und jedesmal, wenn auf den Branch ''master'' gepusht wurde, wurde auf einen externen Server ''www.fragebögeli.ch'' deployed.
+\par\medskip
+Dieser Punkt ist bereits erfüllt.
+
+\subsection{II Dependencies}
+\label{sec:twelveDependencies}
+
+Das Projekt wurde mit .Net Core realisiert. Alle Dependencies wurden durch NodeJS und Nuget hinzugefügt und verwaltet. Es werden keine globale Dependencies benötigt. 
+Projektbeteiligte setzten Linux, Mac und Windows ein und hatten keine Probleme, am Projekt zu arbeiten.
+\par\medskip
+Dieser Punkt ist bereits erfüllt.
+
+\subsection{III Config}
+\label{sec:twelveConfig}
+
+.Net Core bietet von Haus aus eine Config an: ''appsettings.json'', welche wir auch für die Datenbankanbindung benutzen: 
+Siehe \autoref{sec:twelveBacking}.
+\par\medskip
+Auch dieser Punkt ist bereits erfüllt.
+
+\subsection{IV Backing services}
+\label{sec:twelveBacking}
+
+Als Backing service haben wir lediglich eine Datenbank.
+
+Für die Datenbankanbindung wurden Configs definiert bei welcher man zwischen MySql, MsSql und SqLite wählen konnte. 
+Bei LakesideMutual mussten Änderungen am Code gemacht werden, um eine andere DatenbankEngine zu benutzen, bei uns wurden diese drei bereits realisert und werden erkannt.
+\par\medskip
+Wieder ein erfüllter Punkt.
+
+\subsection{V Build, release, run}
+\label{sec:twelveBuild}
+
+Wie bei \autoref{sec:twelveCodebase} erwähnt wird automatisch über den CI gepublished und die App ist dann bereits einsatzbereit.
+\par\medskip
+Noch ein Punkt erfüllt.
+
+\subsection{VI Processes}
+\label{sec:twelveProcesses}
+
+Der State der App ist in zwei Bereiche unterteilt: Client (Browser) und Server (Datenbank).
+
+Ein Fragebogen / Antwortbogen wird erst zum Server geschickt, wenn der Benutzer alle Felder erfolgreich ausgefüllt hat.
+Die App selber ist stateless, sie fragt lediglich Daten von der Datenbank ab oder speichert diese.
+\par\medskip
+Supi, noch ein erfüllter Punkt.
+
+\subsection{VII Port binding}
+\label{sec:twelvePort}
+
+Die App wurde so gelöst, dass sie primär im IIS deployed wird. Dabei lässt sich Port beim IIS einstellen, jedoch ist dies in einem DockerContainer unmöglich, da ein Windows benötigt wird...
+\par\medskip
+Dafür gibt es eine zweite Option: Die App wird in der Console ausgeführt und diese starte einen eigen WebServer (Kestrel).
+Dieser läuft immer auf dem Port 80. Hier hätten wir die Möglichkeit, einen Configeintrag anzubieten, um den Port zu ändern: Dies haben wir nicht.
+\par\medskip
+Nach der Vorgabe haben wird jedoch auch diesen Punkt erfüllt.
+
+\subsection{VIII Concurrency}
+\label{sec:twelveConcurrency}
+
+Da unsere App stateless ist und keine Worker hat, kann diese mit einem Loadbalancer soviel mal dupliziert werden, wie nötig.
+Die Datenbankanbindung wurde auch so gelöst, dass ein Fragebogen nur mit dem TimeStamp der momentanen Daten gemacht werden kann. Wenn zwei Benutzer zur gleichen Zeit einen Fragebogen editieren, bekommt der letzte, der auf ''speichern'' drückt eine Fehlermeldung, dass die Daten bereits durch einen Dritten geändert wurden.
+\par\medskip
+Für die Datenbank muss dann die richtige Engine gewählt werden: SqLite ist nicht möglich. MsSql bietet hier auch dublizierte Datenbanken an, so kann man auch mehrer DatenbankServer laufen lassen.
+\par\medskip
+Noch ein Punkt erfüllt.
+
+\subsection{IX Disposability}
+\label{sec:twelveDisposability}
+
+Stabilität durch schnellen Startup haben wir: Es wird lediglich ein WebServer gestartet, schneller geht nicht.
+Ein friedlicher Shutdown benötigen wir wiederum nicht, da die App immernoch stateless ist.
+
+\subsection{X Dev/prod parity}
+\label{sec:twelveParity}
+
+Nach jedem Sprint wurden alle Arbeitspackete in den Master gemerged und direkt gepublished (siehe \autoref{sec:twelveCodebase}). Durch unsere definierten Tests hatten wir keine Notwendigkeite für einen ''State'' und unsere Änderungen direkt Produktiv gemacht.
+\par\medskip
+Wir haben also keinen ''gap'' zwischen Entwicklung und Produktivem build.
+
+\subsection{XI Logs}
+\label{sec:twelveLogs}
+
+Logs werden wiederum von .Net Core selber gelöst. Über die ''appsettings.json'' kann genau bestimmt werden, was und wie geloggt werden soll: Ob über die Console ausgegeben oder in eine Datei geschrieben. Sogar das Format der Logeinträge lässt sich bestimmen.
+\par\medskip
+Standartmässig wird der Log nur auf die Console ausgegeben (stdout). Dies ist auch die Vorgabe und daher noch ein erfüllter Punkt.
+
+\subsection{XII Admin processes}
+\label{sec:twelveAdmin}
+
+Für ''Admin process'' wird beschrieben, dass man Code direkt ausführen oder Datenbankmigrationen machen kann und zwar in der selben Umgebung, wie die App läuft.
+\par\medskip
+So etwas haben wir leider nicht, die App ist aber nicht so kompliziert, dass die nötig ist. Eine DatenbankMigration wird vom EntityFramework von Microsoft realisiert. Diese schaut selber, dass nur ein Prozess diese Migration durchführt.
+Das Herz der Applikation ist die Datenbank. Sollten solche Eingriffe nötig sein, kann man diese direkt in der Datenbank machen.
+
+\section{Hands-On: Deploymentautomation}
+\label{sec:handsOnDeploitment}
+
+Wenn man an einer Applikation entwickelt, möchte man auch das Ergebnis automatisch deployen können. Es war kein Zufall, dass wir bei \autoref{sec:handsOnLakesideMutual} ein Script geschrieben haben.
+Sollte es eine Änderung an einer der Applikationen geben, kann man einfach diesen Teil des Scriptes ausführen und der Service wird neu gebuildet und auf die Cloud geladen.
+\par\medskip
+Zum Deployen ausserhalb der Weboberfläche hat man nur die CloudFoundy-CommandoZeileApplikation. Diese kann aber alles und mehr wie die Weboberfläche.
+Wir können nur den Source hochladen (Wie bei \autoref{sec:helloworld}), nur die Binaries (Wie bei \autoref{sec:selfInformation}) oder DockerContainer (Wie bei \autoref{sec:handsOnLakesideMutual}). 
+Wir haben darauf geschaut, möglich jedes mal anzuschauen und zu presentieren.
+\par\medskip
+Das Deployen von Source ist das Einfachte aber auch das Teuerste: Die Cloud benötigt zusätliche Leistung wie Speicher, Memory, CPU und natürlich Zeit. 
+Die Zuweisung von etwa Memory kann im nachhinein nicht reduziert werden, da bei jedem start compiliert wird. Dies sorgt für höhere Kosten obwohl die Ressourcen nur zum Compilieren benötigt werden.
+
+\section{Analyse: SWOT-Assessment von Cloud Provider und Cloud Offering}
+\label{sec:analyseSWOT}
+\begin{center}
+	\centering
+	\includegraphics[width=1\linewidth]{images/SWOT/SWOT}
+	\label{fig:swot}
+\end{center}
+
+\subsection{Stärken}
+Die Swisscom AG (Swisscom) ist ein führendes ICT-Unternehmen der Schweiz. Swisscom bietet eine Vielzahl von Diensten und Produkten im Zusammenhang mit Mobiltelefonen und deren Diensten sowie Sprach- und Datenkommunikation. Swisscom bietet über bereits bestehende Teilnehmeranschlüsse Zugang zu digitalen und analogen Diensten sowie Breitbanddienste. Die Swisscom ist dadurch sehr bekannt in der Schweiz und hat einen guten Ruf. 
+Die Laufzeit ist eine der weltweit ausgereiftesten Umgebungen für die Entwicklung und Bereitstellung von Cloud-Apps für Unternehmen. Dank der Cloud Foundry-Technologie bietet es eine funktionsreiche Laufzeitumgebung für containergestützte Anwendungen.
+Die Cloud Foundry ist bekannt für ihre riesige und aktive Community und die Unterstützung vieler Programmiersprachen. Anwendungen werden entweder mithilfe von Buildpacks oder Docker-Images schnell bereitgestellt. Wie jedes andere Element der Application Cloud werden Services auf die Anforderungen des Kunden skaliert.
+Die Swisscom bietet ein gutes Einsteigerangebot zum gratis Testen für 3 Monate.
+Das Datenvolumen ist unbegrenzt und wird nicht extra verrechnet.
+Man bezahlt was man benutzt, es gibt keine versteckten Kosten bei der Swisscom.
+
+\subsection{Schwächen}
+Die SLA der Swisscom war für uns leider recht wenig Hilfreich. Keine der wichtigen 5 Fragen werden da klar beantwortet und bietet generell wenig für den Kunden nützliche Informationen.
+Da es wenige Tutorials gibt, und die vorhandenen Tutorials oft nicht spezifisch für die im Umfang dieser Gruppenarbeiten gestellten Aufträge ist, muss man sich als Entwickler durch hunderte Seiten an Dokumentation durcharbeiten, falls eine Applikation nicht wie geplant funktioniert.
+Die maximale zugewiesene Leistung wird pro Stunde als Grundlage für die Berechnung des Stundenpreises für jede Runtime oder Service verwendet.
+Die Optionsmöglichkeiten für Dienste sind leider beschränkt im Vergleich zu anderen Anbietern und dadruch konnten wir bei der Preisrecherche nur mit Annahmen rechnen.
+
+\subsection{Chancen}
+Weil die Daten in der Schweiz bleiben und dem Schweizer Gesetz unterstellt ist, sehen wir Potential für viele Kunden in der Schweiz die darauf Wert legen.
+In den letzten Jahren ist die Verwendung von Cloudlösungen für verschiedene kleinere, mittlere und grössere Unternehmen gestiegen. Auch der steigende Bedarf an IoT-Lösungen sorgt für einen Markt mit grosser Nachfrage.
+
+\subsection{Gefahren}
+Die Nachfrage für flexible und umfangreiche Cloudlösungen steigt und dadurch steigt auch der Konkurrenzdruck. Die drei grossen Anbieter Google, Amazon und Microsoft haben bereits ein breites Spektrum von Lösungen die für jede Situation eine Lösung bietet. Kleinere Anbieter laufen Gefahr, dass sie preislich und leistungsmässig den Anschluss verlieren.
+Datenlecks und -skandale treten vermehrt auch bei grossen Firmen auf. Falls bekannt werden sollte, dass die Kundendaten der Swisscom durch eine Schwachstelle im System nicht mehr sicher sind, würde das dem Vertrauen gegenüber dem Unternehmen schaden. Und Cloudanbieter sind darauf angewiesen, dass die Kunden ihnen ihre Daten anvertrauen.
+
+\section{Konzept: Provider Evaluation Checkliste}
+\label{sec:konzeptProviderEvaluation}
+\subsection{Checkliste}
+\begin{center}
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/ProviderEvaluationCheckliste/ChecklisteFragen}
+	\label{fig:checklistefragen}
+\end{center}
+\subsection{Evaluation Swisscom}
+\begin{center}
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/ProviderEvaluationCheckliste/ChecklisteAntworten}
+	\label{fig:checklisteantworten}
+\end{center}
+
+\section{Analyse: Management Summary}
+\label{sec:analyseManagementSummary}
+
+Die Swisscom eine gute Wahl für Entwickler von Webapplikationen mit geringen bis mittlere Anforderungen an Speicherplatz und Rechenleistung. Das umfangreiche
+Angebot und die transparenten Preise für Pay-per-Use ohne versteckte Preise und Abo Pflicht ermöglichen es dem Entwickler, sich auf die Applikation zu konzentrieren und die Funktion, Applikationen automatisch zu skalieren, bieten eine flexible Nutzung.
+\par
+\vspace{5mm}
+Vorausgesetzt der ausführende Entwickler weiss, was er tut, ist der Umzug in die Cloud ein einfaches und schnelles Unterfangen. Bereits wenige Minuten nach dem Erstellen eines Projektes lässt sich dieses auch schon Ausführen. Administrative Aufgaben und Sicherheitsfragen auf Hardwareebene sind dann nicht mehr Aufgabe des Entwicklers, sondern werden von Swisscom übernommen. Die verschiedenen Monitoring Optionen ermöglichen eine genaue Überwachung und Steuerung der Applikation.
+\par
+\vspace{5mm}
+Durch die Architektur in Pods, welche aus mehreren Containern bestehen ist die Verbreitung von Daten auf eine grosse Anzahl potenzieller Nutzer gewährleistet. Die automatische Skalierung und die Verwendung von Fail Safe und Loadbalancern ist dabei auch sehr nützlich.
+\par
+\vspace{5mm}
+Dank des Open Source Standards von Cloud Foundry gibt es keine Lock-Ins und die Apps können einfach von und zu anderen Cloud-Anbietern migriert werden.
+\par
+\vspace{5mm}
+Mit einer pro Stunde Kostenrechnung und den Mitteln, Applikationen mit wenigen Klicks schnell
+als Container zu Deployen, kann die Laufzeit sehr einfach reguliert werden und lässt sich bei Bedarf 
+schnell umkonfigurieren. Die Kostenübersicht im Dashboard wird täglich aktualisiert und bietet somit eine gute Kontrolle über die verursachten Kosten.
+
+\end{document}
