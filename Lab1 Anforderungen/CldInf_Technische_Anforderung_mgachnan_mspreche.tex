@@ -130,8 +130,8 @@
   \hline
   \begin{itemize}
     \item Kostenreduktion
-    \item Einsparung von IT-Administrationsaufwand
-    \item Garantierte Verfügbarkeit
+    \item Einsparung von IT-Administrationsaufwand 
+    \item Garantierte Verfügbarkeit 
     \item Schnelles skalieren / Agilität (on-demand)
   \end{itemize}
   & 
@@ -148,12 +148,15 @@
 \par\medskip
 
 Für den Endkunden ergibt eine externe Cloud eine Kostenreduktion durch nicht benötigt Hardware, dessen Betrieb und den redudierten IT-Administrationsaufwand. 
+
 Normalerweise garantiert ein Provieder dem Kunden eine Garantie für die Verfügbarkeit und sorgt bei Unterbruch automatisch und selbständig für die Bereinigung.
-Zusätzlich bietet dieser eine Platform an, auf welcher die Cloud "on-demand" angepasst (skaliert) werden kann.
+
+Zusätzlich bietet dieser eine Platform an, auf welcher die Cloud ''on-demand'' angepasst (skaliert) werden kann.
 
 \par\medskip
 
-Im Gegenzug befinden sich die Daten des Endkunden auf der Cloud und muss sich auf den Provider verlassen, dass diese sicher (vor Angreifern / Backup) sind.
+Im Gegenzug befinden sich die Daten des Endkunden auf der Cloud und muss sich auf den Provider verlassen, dass diese sicher (vor Angreifern / Backup) sind. Man könnte es auch als Vorteil sehen, selber keine Sicherheit für die Daten bieten zu müssen, falls der Provider eine gute Sicherheit bietet.
+
 Ausserdem ist die Cloud nicht im eigenem Netzwerk sondern muss übers Internet angesprochen werden. Dadurch können Latenzen enstehen und ohne Internet hat man keinen Zugriff mehr.
 
 \par\medskip\medskip
@@ -172,17 +175,24 @@ Ausserdem ist die Cloud nicht im eigenem Netzwerk sondern muss übers Internet a
   \begin{itemize}
     \item Mehr Leistung verfügbar als benötigt
     \item IT-Administrationsaufwand / Support / Controlling
+    \item Internet Bandbreite
+    \item Verfügbarkeit
+    \item Datensicherheit
   \end{itemize}
   \\
   \hline
 \end{tabular}
 
-Für den Provider ist das anbieten von Clouds eine Einnahmequelle, welche meist im Abo-Modell (FixKosten / per CPU-Aufwand) angeboten werden.
-Durch ein gutes System muss der Provider kaum Hand an die Infrstrukter legen da das meiste Automatisch gemanaged wird.
+\par\medskip
+
+Für den Provider ist das Anbieten von Clouds eine Einnahmequelle, welche meist im Abo-Modell (FixKosten / per CPU-Aufwand) angeboten werden.
+Durch ein gutes System muss der Provider kaum Hand an die Infrastrukter legen, da das meiste Automatisch gemanaged wird.
 
 \par\medskip
 
 Wegen des Angebots der Skalierung muss immer mehr Hardware / Leistung zur verfügung stehen als schlussendlich gebraucht wird und obwohl das System vieles Automatisch erledigen kann, sind IT-Fachleute nötig, um neue Hardware anzuschliesen, das System zu überwachen oder dem Kunden Support zu liefern.
+Die Cloud-Infrastruktur muss eine genügend gute Bandbreite liefern, um alle Clouds eine schnelle und reibungslose Kommunikation zu ermöglichen.
+Auch ein Backup oder Ausfallsicherung sollte dem Kunden geboten werden, um die versprochene Verfügbarkeit und Datensicherheit zu gewährleisten.
 
 \par\medskip
 
@@ -195,6 +205,27 @@ Wegen des Angebots der Skalierung muss immer mehr Hardware / Leistung zur verfü
 
 \par\medskip
 
+\begin{tabular}{ |p{7cm}|p{7cm}|  }
+  \hline
+  Public & Private \\
+  \hline
+  Die Cloud wird bei einem Provider gehostet &
+  Die Cloud wird ''in house'' bei sich selber gehostet \par \\
+
+  Die Hardware und die Betreibung wird vom Provider geleistet &
+  Die Hardware muss von einem selbst beschafft und betrieben werden \par \\
+
+  Skalierung ist problemlos möglich &
+  Um höher zu skalieren, muss eventuell neue Hardware beschafft und eingerichtet werden \par \\
+
+  Verfügbarkeit und genügend Bandbreite wird vom Provider garantiert (Controlling) &
+  Man muss selber überprüfen, ob die Cloud läuft und genügend Bandbreite hat \par \\
+
+  \hline
+\end{tabular}
+
+  \par\medskip
+
 \section{Aufgabe 3}
 \label{sec:Aufgabe-3}
 
@@ -204,6 +235,11 @@ Wegen des Angebots der Skalierung muss immer mehr Hardware / Leistung zur verfü
 
 \subsection{Applikationsebene}
 \label{subsec:Aufgabe-3_Applikationsebene}
+
+Eine Homepage (oder WebApplikation) wird typischerweise auf einer ''Public'' Cloud gehostet, um die Verfügbarkeit zu garantieren.
+\medskip
+
+Ein BackupSystem (z.B. NAS) sollte ''Privat'' gehostet werden, da grössere Datenmengen effizienter über ein lokales Netzwerk übertragen werden kann als übers Internet.
 
 \subsection{Plattformebene}
 \label{subsec:Aufgabe-3_Plattformebene}
