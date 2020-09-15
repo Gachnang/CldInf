@@ -22,7 +22,7 @@
 \pagestyle{fancyplain}
 \fancyhf{}
 % remove rule/lines as well
-\renewcommand{\headrulewidth}{0pt} 
+\renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 % set papersize, magin and footersize
 \geometry{a4paper,portrait,left={3cm},right={3cm},top={2cm},bottom={1cm},includefoot,foot={1cm}}
@@ -94,7 +94,7 @@
 % set parindent to 0px to remove it (Einrücken von neuer Absatz)
 \setlength\parindent{0pt}
 % ---------------------------------------------------------------------------
-% begin Document 
+% begin Document
 \begin{document}
 % set font
 \sffamily
@@ -130,11 +130,11 @@
   \hline
   \begin{itemize}
     \item Kostenreduktion
-    \item Einsparung von IT-Administrationsaufwand 
-    \item Garantierte Verfügbarkeit 
+    \item Einsparung von IT-Administrationsaufwand
+    \item Garantierte Verfügbarkeit
     \item Schnelles skalieren / Agilität (on-demand)
   \end{itemize}
-  & 
+  &
   \begin{itemize}
     \item Daten-Kontrolle / -Sicherheit
     \item Abhänigkeit zum Provider
@@ -147,7 +147,7 @@
 
 \par\medskip
 
-Für den Endkunden ergibt eine externe Cloud eine Kostenreduktion durch die nicht benötigte Hardware, dessen Betrieb und einen reduzierten IT-Administrationsaufwand. 
+Für den Endkunden ergibt eine externe Cloud eine Kostenreduktion durch die nicht benötigte Hardware, dessen Betrieb und einen reduzierten IT-Administrationsaufwand.
 
 Normalerweise garantiert ein Provider dem Kunden die Verfügbarkeit und sorgt bei Unterbruch automatisch und selbständig für die Bereinigung.
 
@@ -171,7 +171,7 @@ Ausserdem ist die Cloud nicht im eigenem Netzwerk sondern muss übers Internet a
     \item Abo-Modell / Money
     \item Automatisches System
   \end{itemize}
-  & 
+  &
   \begin{itemize}
     \item Mehr Leistung verfügbar als benötigt
     \item IT-Administrationsaufwand / Support / Controlling
@@ -248,7 +248,7 @@ Ein BackupSystem (z.B. NAS) sollte ''Privat'' gehostet werden, da grössere Date
 \colorbox{yellow}{TODO: EXAMPLE FOR ''Public''.}
 \par\medskip
 
-Mehrere Homepages (oder WebApplikationen) oder Datenbanken benötigen eine Plattform (Hosting-Dienst wie IIS oder Apache, Datenbank-Server wie MSSQL, MYSQL oder Oracle). 
+Mehrere Homepages (oder WebApplikationen) oder Datenbanken benötigen eine Plattform (Hosting-Dienst wie IIS oder Apache, Datenbank-Server wie MSSQL, MYSQL oder Oracle).
 Im ''Private'' wird typischerweise ein IaaS gehostet um nicht mehrere Instanzen des Services laufen zu lassen, dadurch werden Ressourcen gespart.
 
 ''Public'' bieten normalerweise einem spezifische SaaS an, um eine Homepage oder Datenbank zu hosten, damit sie vom gleichem Prinzip profitieren können.
@@ -308,8 +308,26 @@ Mit einer ''Private'' Cloud könnte dies möglich sein, wenn die Virtualisierung
     und Storage Infrastruktur erfüllen, damit Cloud Dienste an eine Vielzahl von Kunden angeboten
     werden können?
 \end{shadedquotation}
-\colorbox{yellow}{TODO}
-\subsubsection{Tabelle}
+
+Zuerst ist die Hardware erforderlich. Eine einzige Maschine ist wegen des Ausfallschutzes nicht ausreichend. Ein USV (Unterbrechungsfreie Stromversorgung) ist zu empfehlen.
+\par\medskip
+Die Maschinen müssen miteinander im Netzwerk verbunden sein und eine Virtualisierungsumgebung muss auf jeder eingerichtet werden.
+\par\medskip
+Die Virtualisierungsumgebung sollte die OSSM (On-Demand, Self-Service, Scalable und Measurable) erfüllen, es gibt es verschiedene Optionen, auch open-source, einige Beispiele wären etwa:
+\begin{itemize}
+  \item Openstack (IaaS)
+  \item Proxmox (PaaS)
+  \item Cloudfoundry (PaaS, SaaS)
+  \item Apache CloudStack (IaaS)
+\end{itemize}
+Die meisten Virtualisierungsumgebung bieten selber kein Zahl- und Abrechnungs-System an. Dies muss eventuell selber realisiert werden oder eine passende Virtualisierungsumgebung gefunden werden.
+\par\medskip
+Ein Backup-System für das Sichern der Daten der Kunden sollte ebenfalls realisiert werden.
+\par\medskip
+Eine fixe IP und Domäne wird auch nötig sein, damit der Kunde Zugriff auf den Service erhält.
+Neben Internet, Strom und Kühlung sollte dies alles sein, um ein Cloud-Service anbieten zu können.
+
+\subsection{Tabelle}
 \label{sec:Aufgabe-4_tabelle}
 \colorbox{yellow}{TODO}
 \begin{tabular}{ |p{2cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|  }
