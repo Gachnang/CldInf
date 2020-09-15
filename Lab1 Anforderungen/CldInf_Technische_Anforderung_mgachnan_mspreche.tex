@@ -337,14 +337,13 @@ Neben Internet, Strom und Kühlung sollte dies alles sein, um ein Cloud-Service 
 \rowcolors{1}{}{lightgray}
 \subsubsection{Tabelle}
 \label{sec:Aufgabe-4_tabelle}
-\colorbox{yellow}{TODO}
 
 \begin{tabular}{ |p{2cm}|p{5cm}|p{5cm}|p{5cm}|p{5cm}|  }
   \hline
   & 
-  Mandantenfähigkeit 
+  Mandantenfähigkeit (Isolation)
   & 
-  Mobility 
+  Mobility (Change on-demand)
   & 
   Availability
   & 
@@ -358,33 +357,38 @@ Neben Internet, Strom und Kühlung sollte dies alles sein, um ein Cloud-Service 
   &
   Eine Applikation kann ohne Probleme repliziert und verschoben werden. Lediglich die Daten müssen dabei mit kopiert / verschoben werden. 
   &
-  
+  Die Applikation hat eine Ausfallsicherung und ist stets laufend / erreichbar.
   &
+  Man hat Informationen über den Status und Verlauf der Applikation.
   \\
   Netz
   &
   Die Kunden sollten sich, falls nicht so gewollt, untereinander im Netz sehen können.
   &
-  Ein Netz-Provider wechsel sollte ohne Probleme gehen.
+  Eine Änderung am Netzwerk sollte ohne Probleme gehen: Komponenten hinzufügen und entfernen.
   &
-  
+  Ein ausfall des Netzes sollte nicht möglich sein / schnellst möglich behoben werden.
   &
+  \colorbox{yellow}{TODO}
   \\
   Compute
   &
   Kunden die eine hohe Leistung erfordern, sollten keinen Einfluss auf die Leistung bei anderen Kunden haben.
   &
-  
+  Die Applikation sollte gestartet, gestoppt und skaliert werden können.
   &
-  
+  \colorbox{yellow}{TODO}  
   &
+  \colorbox{yellow}{TODO}
   \\
   Storage &
   Die Kunden sollten auf die Daten von anderen, falls nicht so gewollt, keinen Zugriff haben.
   &
   Die Storage Technologie kann ohne grossen Einfluss auf die anderen Komponenten geändert werden.
   &
+  \colorbox{yellow}{TODO}
   &
+  \colorbox{yellow}{TODO}
   \\
   \hline
 \end{tabular}
