@@ -246,23 +246,26 @@ Ein BackupSystem (z.B. NAS) sollte ''Privat'' gehostet werden, da grössere Date
 \subsubsection{Plattformebene}
 \label{subsec:Aufgabe-3_Plattformebene}
 {\large\bf Platform as a Service (PaaS)} \\\medskip
-\colorbox{yellow}{TODO: EXAMPLE FOR ''Public''.}
-\par\medskip
-
 Mehrere Homepages (oder WebApplikationen) oder Datenbanken benötigen eine Plattform (Hosting-Dienst wie IIS oder Apache, Datenbank-Server wie MSSQL, MYSQL oder Oracle).
 Im ''Private'' wird typischerweise ein IaaS gehostet um nicht mehrere Instanzen des Services laufen zu lassen, dadurch werden Ressourcen gespart.
 
-''Public'' bieten normalerweise einem spezifische SaaS an, um eine Homepage oder Datenbank zu hosten, damit sie vom gleichem Prinzip profitieren können und ist hat den Vorteil um Verfügbarkeits-Risiken wie z.B. von reddit hug of death zu verringern.
+''Public'' bieten normalerweise einem spezifische SaaS an, um eine Homepage oder Datenbank zu hosten, damit sie vom gleichem Prinzip profitieren können. Dies hat ebenfalls den Vorteil um Verfügbarkeits-Risiken zu verringern.
+\par\medskip
+Wenn mehrere Applikationen eng zusammen arbeiten und eine Kommunikation übers Netzwerk nicht möglich / unsicher ist, können die Applikationen parallel auf der gleichen Plattform laufen.
+Oder wenn man grössere Kontrolle über die Applikation haben möchte, zum Beispiel eine Datenbank mit Erweiterungen oder Modifikation, die es so als PaaS nicht gibt.
 
 \subsubsection{Infrastrukturebene}
 \label{subsec:Aufgabe-3_Infrastrukturebene}
 {\large\bf Infrastruktur as a Service (IaaS)} \\\medskip
-\colorbox{yellow}{TODO: EXAMPLE FOR ''Public''.}
 Die Bewältigung komplexer Aufgaben, mit mehreren Millionen Variablen oder Berechnungen, erfordert normalerweise die Verwendung von Supercomputern oder Clustern. 
 Einer der Bausteine des modernen Marketings ist das Sammeln grosser Mengen von Benutzerdaten. Die Verarbeitung ist jedoch wichtiger als nur das Sammeln dieser Informationen. IaaS kann Big Data verwalten, speichern und analysieren. Bei den beiden genannten Beispielen kann ein Public IaaS aufgrund seiner Skalierbarkeit eine bessere Alternative sein.
 \par\medskip
-\colorbox{yellow}{TODO: EXAMPLE FOR ''Privat''.}
-Eine Verwendung einer Private Cloud könnte bei der Entwicklung sinnvoll sein um das Netzwerk "physisch" zu Layern zum die Komponenten wie Datenbank, Storage, Applikation und OS von einander Netzwerkunabhängig zu trennen.
+
+Eine Verwendung einer Private Cloud könnte bei der Entwicklung sinnvoll sein um das Netzwerk ''physisch'' zu Layern.
+
+Der Stand kann in etwa drei Layern unterteilt werden: Development, Stagging und Produktion.
+
+Jeder Layer hat eigene Komponenten wie Datenbank, Storage und Applikation. So beeinflussen sich die einzelnen Layer nicht aber könnten etwa von einem CI / CD (Continuous Integration / Continuous Deployment) deployed werden.
 
 \section{Technische Anforderungen an die Cloud}
 \subsection{Aufgabe 4}
