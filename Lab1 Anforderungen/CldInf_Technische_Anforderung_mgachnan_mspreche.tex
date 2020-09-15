@@ -236,7 +236,8 @@ Auch ein Backup oder Ausfallsicherung sollte dem Kunden geboten werden, um die v
 \subsection{Applikationsebene}
 \label{subsec:Aufgabe-3_Applikationsebene}
 {\large\bf Software as a Service (SaaS)} \\\medskip
-Eine Homepage (oder WebApplikation) wird typischerweise auf einer ''Public'' Cloud gehostet, um die Verfügbarkeit zu garantieren.
+
+Eine einzelne Homepage (oder WebApplikation) wird typischerweise auf einer ''Public'' Cloud gehostet, um die Verfügbarkeit zu garantieren.
 \medskip
 
 Ein BackupSystem (z.B. NAS) sollte ''Privat'' gehostet werden, da grössere Datenmengen effizienter über ein lokales Netzwerk übertragen werden kann als übers Internet.
@@ -244,6 +245,11 @@ Ein BackupSystem (z.B. NAS) sollte ''Privat'' gehostet werden, da grössere Date
 \subsection{Plattformebene}
 \label{subsec:Aufgabe-3_Plattformebene}
 {\large\bf Platform as a Service (PaaS)} \\\medskip
+TODO: EXAMPLE FOR ''Public''.
+\medskip
+
+Mehrere Homepages (oder WebApplikationen) oder Datenbanken benötigen eine Plattform (Hosting-Dienst wie IIS oder Apache, Datenbank-Server wie MSSQL, MYSQL oder Oracle). 
+Im ''Private'' wird typischerweise ein IaaS gehostet um nicht mehrere Instanzen des Services laufen zu lassen, dadurch werden Ressourcen gespart.
 
 \subsection{Infrastrukturebene}
 \label{subsec:Aufgabe-3_Infrastrukturebene}
@@ -262,8 +268,7 @@ Ein BackupSystem (z.B. NAS) sollte ''Privat'' gehostet werden, da grössere Date
   technischen Anforderungen sich aus diesen ergeben:
 
   \begin{itemize}
-    \item Welche Anforderungen müssen Applikationen erfüllen, damit sie in die Cloud «verschoben»
-    werden können?
+    \item Welche Anforderungen müssen Applikationen erfüllen, damit sie in die Cloud «verschoben» werden können?
     \item Welche neuen zusätzlichen technischen Anforderungen ergeben sich, wenn aus traditioneller IT
     ein Cloud fähiges Rechenzentrum entwickelt werden soll. Was muss die Netzwerk-, Compute
     und Storage Infrastruktur erfüllen, damit Cloud Dienste an eine Vielzahl von Kunden angeboten
@@ -275,6 +280,30 @@ Ein BackupSystem (z.B. NAS) sollte ''Privat'' gehostet werden, da grössere Date
   beschreiben Sie die Auswirkungen dieser Eigenschaften auf Applikationen, Netz, Compute und Storage.
 \end{shadedquotation}
 
+\subsection{Technischen Anforderungen}
+\label{sec:Aufgabe-4_technic}
+\begin{shadedquotation}
+  Welche Anforderungen müssen Applikationen erfüllen, damit sie in die Cloud «verschoben» werden können?
+\end{shadedquotation}
+
+Die Applikation muss über ein Netzwerk angesprochen werden können. Desktop-Applikationen wie ''Word'' können nicht auf einer Cloud betrieben werden.
+Microsoft musste ''Word'' neu als WebApplikation realisieren, um es in der Cloud laufen zu lassen.
+\par\medskip
+Applikationen, die eine spezifische Hardware benötigen (welche direkt angesteuert werden müssen) sind ebenfalls nicht Cloud fähig. Die Hardware müsste in ein IoT-Device umgebaut werden, so dass ein ansteuern übers Netzwerk möglich wird.
+Zum Beispiel gibt es als Kopierschutz CDs oder Dongles, welches direkt an der Cloud eingelegt / angeschlossen werden muss. Eine ''Public'' Cloud erlaubt einem normalerweise nicht, ein solches Gerät anzuschliessen.
+Mit einer ''Private'' Cloud könnte dies möglich sein, wenn die Virtualisierung dies erlaubt, aber einen grösseren Aufwand bedeuten.
+
+\label{sec:Aufgabe-4_technic}
+\begin{shadedquotation}
+  Welche neuen zusätzlichen technischen Anforderungen ergeben sich, wenn aus traditioneller IT
+    ein Cloud fähiges Rechenzentrum entwickelt werden soll. Was muss die Netzwerk-, Compute
+    und Storage Infrastruktur erfüllen, damit Cloud Dienste an eine Vielzahl von Kunden angeboten
+    werden können?
+\end{shadedquotation}
+
+\subsection{Tabelle}
+\label{sec:Aufgabe-4_tabelle}
+
 \begin{tabular}{ |p{2cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|  }
   \hline
   & Mandantenfähigkeit & Mobility & … & . \\
@@ -283,6 +312,7 @@ Ein BackupSystem (z.B. NAS) sollte ''Privat'' gehostet werden, da grössere Date
   Netz & & & & \\
   Compute & & & & \\
   Storage & & & & \\
+  \hline
 \end{tabular}
 
 \end{document}
