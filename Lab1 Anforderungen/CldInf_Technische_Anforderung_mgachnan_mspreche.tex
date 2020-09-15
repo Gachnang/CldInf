@@ -305,7 +305,25 @@ Mit einer ''Private'' Cloud könnte dies möglich sein, wenn die Virtualisierung
     und Storage Infrastruktur erfüllen, damit Cloud Dienste an eine Vielzahl von Kunden angeboten
     werden können?
 \end{shadedquotation}
-\colorbox{yellow}{TODO}
+
+Zuerst ist die Hardware erforderlich. Eine einzige Maschine ist wegen des Ausfallschutzes nicht ausreichend. Ein USV (Unterbrechungsfreie Stromversorgung) ist zu empfehlen.
+\par\medskip
+Die Maschinen müssen miteinander im Netzwerk verbunden sein und eine Virtualisierungsumgebung muss auf jeder eingerichtet werden.
+\par\medskip
+Die Virtualisierungsumgebung sollte die OSSM (On-Demand, Self-Service, Scalable und Measurable) erfüllen, es gibt es verschiedene Optionen, auch open-source, einige Beispiele wären etwa:
+\begin{itemize}
+  \item Openstack (IaaS)
+  \item Proxmox (PaaS)
+  \item Cloudfoundry (PaaS, SaaS)
+  \item Apache CloudStack (IaaS)
+\end{itemize}
+Die meisten Virtualisierungsumgebung bieten selber kein Zahl- und Abrechnungs-System an. Dies muss eventuell selber realisiert werden oder eine passende Virtualisierungsumgebung gefunden werden.
+\par\medskip
+Ein Backup-System für das Sichern der Daten der Kunden sollte ebenfalls realisiert werden.
+\par\medskip
+Eine fixe IP und Domäne wird auch nötig sein, damit der Kunde Zugriff auf den Service erhält.
+Neben Internet, Strom und Kühlung sollte dies alles sein, um ein Cloud-Service anbieten zu können.
+
 \subsection{Tabelle}
 \label{sec:Aufgabe-4_tabelle}
 \colorbox{yellow}{TODO}
