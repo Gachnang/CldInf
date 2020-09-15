@@ -18,6 +18,7 @@
 \usepackage{ragged2e}
 \usepackage{framed}
 \usepackage{quoting}
+\usepackage{lscape}
 % remove current style and use fancyplain
 \pagestyle{fancyplain}
 \fancyhf{}
@@ -328,19 +329,21 @@ Ein Backup-System für das Sichern der Daten der Kunden sollte ebenfalls realisi
 Eine fixe IP und Domäne wird auch nötig sein, damit der Kunde Zugriff auf den Service erhält.
 Neben Internet, Strom und Kühlung sollte dies alles sein, um ein Cloud-Service anbieten zu können.
 
+\begin{landscape}
 \subsubsection{Tabelle}
 \label{sec:Aufgabe-4_tabelle}
 \colorbox{yellow}{TODO}
-\begin{tabular}{ |p{2cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|  }
+
+\begin{tabular}{ |p{2cm}|p{5cm}|p{5cm}|p{5cm}|p{5cm}|  }
   \hline
   & 
   Mandantenfähigkeit 
   & 
   Mobility 
   & 
-  … 
+  Availability
   & 
-  . 
+  Maintainability
   \\
   \hline
   Applications
@@ -350,12 +353,35 @@ Neben Internet, Strom und Kühlung sollte dies alles sein, um ein Cloud-Service 
   &
   Eine Applikation kann ohne Probleme repliziert und verschoben werden. Lediglich die Daten müssen dabei mit kopiert / verschoben werden. 
   &
+  
   &
   \\
-  Netz & & & & \\
-  Compute & & & & \\
-  Storage & & & & \\
+  Netz
+  &
+  Die Kunden sollten sich, falls nicht so gewollt, untereinander im Netz sehen können.
+  &
+  Ein Netz-Provider wechsel sollte ohne Probleme gehen.
+  &
+  
+  &
+  \\
+  Compute
+  &
+  Kunden die eine hohe Leistung erfordern, sollten keinen Einfluss auf die Leistung bei anderen Kunden haben.
+  &
+  
+  &
+  
+  &
+  \\
+  Storage &
+  Die Kunden sollten auf die Daten von anderen, falls nicht so gewollt, keinen Zugriff haben.
+  &
+  Die Storage Technologie kann ohne grossen Einfluss auf die anderen Komponenten geändert werden.
+  &
+  &
+  \\
   \hline
 \end{tabular}
-
+\end{landscape}
 \end{document}
