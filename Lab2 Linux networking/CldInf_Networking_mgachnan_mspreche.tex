@@ -135,6 +135,7 @@
 
 Wir verbinden uns auf jeden Container und ändern den Inhalt der Datei \lstinline{/etc/hostname} auf den Namen des Containers.
 Dafür benützen wir \lstinline{sudo nano /etc/hostname}, ändern den Namen und speichern mit Ctrl-O und beenden nano mit Ctrl-X.
+Zusätzlich rufen wir \lstinline{sudo hostname <newHostName>} auf.
 
 Wird setzten das Passwort des jeweiligen Containers auf seinen Namen mit \lstinline{sudo passwd}.
 
@@ -143,6 +144,36 @@ Wird setzten das Passwort des jeweiligen Containers auf seinen Namen mit \lstinl
 \begin{shadedquotation}
   Use Netplan to assign the ip addresses to the interfaces. ...
 \end{shadedquotation}
+
+\begin{tabular}{ |p{5cm}|p{9cm}|}
+  \hline
+  \textbf{Name} & \textbf{IP} \\
+  \hline
+  Client & ENS2: 172.16.0.2 \\
+  \hline
+  R1 & ENS2: 172.16.0.1 \par ENS3: 10.0.0.1 \\
+  \hline
+  R2 & ENS2: 10.0.0.2 \par ENS3: 10.0.1.1 \par ENS4: 10.0.2.1 \\
+  \hline
+  R3 & ENS2: 10.0.2.2 \par ENS3: 10.0.3.2 \par ENS4: 10.0.4.2 \\
+  \hline
+  R4 & ENS2: 10.0.1.2 \par ENS3: 10.0.3.1 \par ENS4: 10.0.5.1 \\
+  \hline
+  R5 & ENS2: 10.0.4.1 \par ENS3: 192.168.1.1 \\
+  \hline
+  Server & ?: 192.168.1.100 \\
+  \hline
+  MITM & ENS2: 10.0.5.2 \\
+  \hline
+\end{tabular}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.90\textwidth]{images/netplan.png}
+    \caption{Netplan}
+    \label{fig:Netplan}
+  \end{center}
+\end{figure}
 
 \subsection{BIRD}
 \label{subsec:BIRD}
