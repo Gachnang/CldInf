@@ -137,7 +137,7 @@ Wir verbinden uns auf jeden Container und ändern den Inhalt der Datei \lstinlin
 Dafür benützen wir \lstinline{sudo nano /etc/hostname}, ändern den Namen und speichern mit Ctrl-O und beenden nano mit Ctrl-X.
 Zusätzlich rufen wir \lstinline{sudo hostname <newHostName>} auf.
 
-Wird setzten das Passwort des jeweiligen Containers auf seinen Namen mit \lstinline{sudo passwd}.
+Wird setzten das Passwort des jeweiligen Containers auf seinen Namen mit \lstinline{sudo passwd ins}.
 
 \subsection{IP Address Assignment}
 \label{subsec:IPAddressAssignment}
@@ -174,6 +174,21 @@ Wird setzten das Passwort des jeweiligen Containers auf seinen Namen mit \lstinl
     \label{fig:Netplan}
   \end{center}
 \end{figure}
+
+Wir ändern den netplan mit \lstinline{sudo nano /etc/netplan/50-cloud-init.yaml}.
+\begin{lstlisting}
+# This file is generated from information provided by
+# the datasource.  Changes to it will not persist across an instance.
+# To disable cloud-init's network configuration capabilities, write a file
+# /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:
+# network: {config: disabled}
+network:
+    version: 2
+    ethernets:
+        ens2:
+            dhcp4: false
+            addresses: [172.16.0.1/24]
+\end{lstlisting}
 
 \subsection{BIRD}
 \label{subsec:BIRD}
