@@ -23,7 +23,6 @@ EOF
     if [ $# -ge "1" ]; then
         echo " ens2 = $1"
         cat <<EOF >> '/etc/netplan/50-cloud-init.yaml'
-
         ens2:
             dhcp4: false
             addresses: [$1]
@@ -32,7 +31,6 @@ EOF
     if [ $# -ge "2" ]; then
         echo " ens3 = $2"
         cat <<EOF >> '/etc/netplan/50-cloud-init.yaml'
-
         ens3:
             dhcp4: false
             addresses: [$2]
@@ -41,13 +39,11 @@ EOF
     if [ $# -ge "3" ]; then
         echo " ens4 = $3"
         cat <<EOF >> '/etc/netplan/50-cloud-init.yaml'
-
         ens4:
             dhcp4: false
             addresses: [$3]
 EOF
     fi
-    netplan apply
 }
 
 
@@ -64,11 +60,38 @@ if [ "$EUID" -ne 0 ]; then
     case $1 in
         Client)
             setup_hostname "Client"
-            setup_ip "172.16.0.1/24"
+            setup_ip "172.16.0.2/24"
+            echo "            gateway4: 172.16.0.1" >> '/etc/netplan/50-cloud-init.yaml'
             ;;
-         *)
+        MITM)
+            setup_hostname "MITM"
+            setup_ip "10.0.100.2"
+            echo "            gateway4: 10.0.4.4" >> '/etc/netplan/50-cloud-init.yaml'
+            ;;
+        R1)
+            setup_hostname "R1"
+            setup_ip "172.16.0.1/24" "10.0.1.3/8"
+            ;;
+        R2)
+            setup_hostname "R2"
+            setup_ip "10.0.2.2/8" "10.0.2.3/8" "10.0.2.4/8"
+            ;;
+        R3)
+            setup_hostname "R3"
+            setup_ip "10.0.3.2/8" "10.0.3.3/8" "10.0.3.4/8"
+            ;;
+        R4)
+            setup_hostname "R4"
+            setup_ip "10.0.4.2/8" "10.0.4.3/8" "10.0.4.4/8"
+            ;;
+        R5)
+            setup_hostname "R5"
+            setup_ip "10.0.5.2/8" "192.168.1.1/24"
+            ;;
+        *)
             echo "name is unknewn..."
             exit 1
             ;;
     esac
+    netplan apply
 fi
