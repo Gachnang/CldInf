@@ -1,0 +1,108 @@
+protocol kernel {
+	persist; # Don't remove routes on BIRD shutdown
+	scan time 20; # Scan kernel routing table every 20 seconds
+	export all; # Default is export none
+}
+protocol device {
+	scan time 10; # Scan interfaces every 10 seconds
+}
+protocol rip {
+	export all;
+	import all;
+	interface "*";
+}
+
+protocol ospf <name> {
+	rfc1583compat <switch>;
+	instance id <num>;
+	stub router <switch>;
+	tick <num>;
+	ecmp <switch> [limit <num>];
+	merge external <switch>;
+	area <id> {
+		stub;
+		nssa;
+		summary <switch>;
+		default nssa <switch>;
+		default cost <num>;
+		default cost2 <num>;
+		translator <switch>;
+		translator stability <num>;
+		
+		networks {
+			<prefix>;
+			<prefix> hidden;
+		}
+		external {
+			<prefix>;
+			<prefix> hidden;
+			<prefix> tag <num>;
+		}
+		stubnet <prefix>;
+		stubnet <prefix> {
+			hidden <switch>;
+			summary <switch>;
+			cost <num>;
+		}
+		interface <interface pattern> [instance <num>] {
+			cost <num>;
+			stub <switch>;
+			hello <num>;
+			poll <num>;
+			retransmit <num>;
+			priority <num>;
+			wait <num>;
+			dead count <num>;
+			dead <num>;
+			secondary <switch>;
+			rx buffer [normal|large|<num>];
+			tx length <num>;
+			type [broadcast|bcast|pointopoint|ptp|
+			nonbroadcast|nbma|pointomultipoint|ptmp];
+			link lsa suppression <switch>;
+			strict nonbroadcast <switch>;
+			real broadcast <switch>;
+			ptp netmask <switch>;
+			check link <switch>;
+			bfd <switch>;
+			ecmp weight <num>;
+			ttl security [<switch>; | tx only]
+			tx class|dscp <num>;
+			tx priority <num>;
+			authentication none|simple|cryptographic;
+			password "<text>";
+			password "<text>" {
+				id <num>;
+				generate from "<date>";
+				generate to "<date>";
+				accept from "<date>";
+				accept to "<date>";
+				from "<date>";
+				to "<date>";
+				algorithm ( keyed md5 | keyed sha1 | hmac sha1 | hmac sha256 };
+			neighbors {
+				<ip>;
+				<ip> eligible;
+			};
+		};
+		virtual link <id> [instance <num>] {
+			hello <num>;
+			retransmit <num>;
+			wait <num>;
+			dead count <num>;
+			dead <num>;
+			authentication none|simple|cryptographic;
+			password "<text>";
+			password "<text>" {
+			id <num>;
+			generate from "<date>";
+			generate to "<date>";
+			accept from "<date>";
+			accept to "<date>";
+			from "<date>";
+			to "<date>";
+			algorithm ( keyed md5 | keyed sha1 | hmac sha1 | hmac sha256
+			};
+		};
+	};
+}
