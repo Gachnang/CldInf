@@ -46,6 +46,89 @@ EOF
     fi
 }
 
+setup_bird() 
+{
+    echo "Setup bird"
+    cat <<EOF > '/etc/bird/bird.conf'
+# This file is generated from information provided by $0
+# Please refer to the documentation in the bird-doc package or BIRD User's
+# Guide on http://bird.network.cz/ for more information on configuring BIRD and
+# adding routing protocols.
+
+# Change this into your BIRD router ID.
+router id $1;
+
+# The Device protocol is not a real routing protocol. It doesn't generate any
+# routes and it only serves as a module for getting information about network
+# interfaces from the kernel.
+protocol device {
+    scan time 10; # Scan interfaces every 10 seconds
+}
+
+# The Kernel protocol is not a real routing protocol. Instead of communicating
+# with other routers in the network, it performs synchronization of BIRD's
+# routing tables with the OS kernel.
+protocol kernel {
+    metric 64;      # Use explicit kernel route metric to avoid collisions
+                    # with non-BIRD routes in the kernel routing table
+    persist;        # Don't remove routes on BIRD shutdown
+    scan time 20;   # Scan kernel routing table every 20 seconds
+    import none;
+    export all;     # Actually insert routes into the kernel routing table
+}
+
+
+protocol rip {
+    export all;
+    import all;
+    interface "*";
+}
+
+protocol ospf {
+    tick: 10;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
+                    # state change arrives. To lower the CPU utilization, it's processed later at periodical intervals of num
+                    # seconds. The default value is 1.
+    import all;
+    export filter {
+            ospf_metric1 = 1000;
+            if source = RTS_STATIC then accept; else reject;
+    };
+
+    area 0 {
+EOF
+    
+    if [ $1 -ge "1" ]; then
+        echo "        interface \"ens2\"" >> '/etc/bird/bird.conf'
+    fi
+    
+    if [ $1 -ge "2" ]; then
+        echo ", \"ens3\"" >> '/etc/bird/bird.conf'
+    fi
+    
+    if [ $1 -ge "3" ]; then
+        echo ", \"ens4\"" >> '/etc/bird/bird.conf'
+    fi
+
+    cat <<EOF > '/etc/bird/bird.conf'
+ {
+            cost 5;
+            type pointopoint;
+            hello 5; retransmit 2; wait 10; dead 20;
+
+        }
+
+        interface "*" {
+                cost 1000;
+                stub;
+        };
+    }
+}
+
+
+EOF
+
+    
+}
 
 echo "CldInf Networker"
 if [ "$EUID" -ne 0 ]; then 
