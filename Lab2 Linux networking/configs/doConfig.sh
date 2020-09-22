@@ -84,8 +84,24 @@ protocol rip {
     interface "*";
 }
 
+protocol static {
+        import all;
+
+EOF
+    
+    for var in "$@"
+    do
+        echo " $var"
+        if [ "$var" != "$1" ]; then
+            echo "        route $var;" >> '/etc/bird/bird.conf'
+        fi
+    done
+    
+    cat <<EOF >> '/etc/bird/bird.conf'
+}
+
 protocol ospf {
-    tick: 10;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
+    tick 10;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
                     # state change arrives. To lower the CPU utilization, it's processed later at periodical intervals of num
                     # seconds. The default value is 1.
     import all;
@@ -95,38 +111,21 @@ protocol ospf {
     };
 
     area 0 {
-EOF
-    
-    if [ $1 -ge "1" ]; then
-        echo "        interface \"ens2\"" >> '/etc/bird/bird.conf'
-    fi
-    
-    if [ $1 -ge "2" ]; then
-        echo ", \"ens3\"" >> '/etc/bird/bird.conf'
-    fi
-    
-    if [ $1 -ge "3" ]; then
-        echo ", \"ens4\"" >> '/etc/bird/bird.conf'
-    fi
-
-    cat <<EOF > '/etc/bird/bird.conf'
- {
+        interface "ens*" {
             cost 5;
             type pointopoint;
             hello 5; retransmit 2; wait 10; dead 20;
 
-        }
+        };
 
         interface "*" {
                 cost 1000;
                 stub;
         };
-    }
+    };
 }
 
-
 EOF
-
     
 }
 
@@ -154,14 +153,17 @@ if [ "$EUID" -ne 0 ]; then
         R1)
             setup_hostname "R1"
             setup_ip "172.16.0.1/24" "10.0.1.3/8"
+            setup_bird "1.1.1.1" "10.0.0.0/16 via 10.0.2.2"
             ;;
         R2)
             setup_hostname "R2"
             setup_ip "10.0.2.2/8" "10.0.2.3/8" "10.0.2.4/8"
+            setup_bird "2.2.2.2" "172.16.0.0/24 via 10.0.1.3" "10.0.1.0/24 via 10.0.1.3" "10.0.3.0/24 via 10.0.3.2" "10.0.4.0/24 via 10.0.4.2"
             ;;
         R3)
             setup_hostname "R3"
             setup_ip "10.0.3.2/8" "10.0.3.3/8" "10.0.3.4/8"
+            setup_bird "3.3.3.3" 
             ;;
         R4)
             setup_hostname "R4"
