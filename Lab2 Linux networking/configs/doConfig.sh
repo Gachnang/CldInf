@@ -126,7 +126,11 @@ protocol ospf {
 }
 
 EOF
-    
+    bird -p
+    birdc configure
+    birdc reload all
+    birdc restart all
+    birdc show status
 }
 
 echo "CldInf Networker"
@@ -153,12 +157,12 @@ if [ "$EUID" -ne 0 ]; then
         R1)
             setup_hostname "R1"
             setup_ip "172.16.0.1/24" "10.0.1.3/8"
-            setup_bird "1.1.1.1" "10.0.0.0/16 via 10.0.2.2"
+            setup_bird "1.1.1.1" "10.0.0.0/8 via \"ens3\"" "172.16.0.0/24 via \"ens2\""
             ;;
         R2)
             setup_hostname "R2"
             setup_ip "10.0.2.2/8" "10.0.2.3/8" "10.0.2.4/8"
-            setup_bird "2.2.2.2" "172.16.0.0/24 via 10.0.1.3" "10.0.1.0/24 via 10.0.1.3" "10.0.3.0/24 via 10.0.3.2" "10.0.4.0/24 via 10.0.4.2"
+            setup_bird "2.2.2.2"
             ;;
         R3)
             setup_hostname "R3"
@@ -168,10 +172,12 @@ if [ "$EUID" -ne 0 ]; then
         R4)
             setup_hostname "R4"
             setup_ip "10.0.4.2/8" "10.0.4.3/8" "10.0.4.4/8"
+            setup_bird "4.4.4.4" 
             ;;
         R5)
             setup_hostname "R5"
             setup_ip "10.0.5.2/8" "192.168.1.1/24"
+            setup_bird "5.5.5.5" "10.0.0.0/8 via \"ens2\"" "192.168.1.0/24 via \"ens3\""
             ;;
         *)
             echo "name is unknewn..."
