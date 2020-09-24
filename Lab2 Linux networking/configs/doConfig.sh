@@ -55,6 +55,9 @@ setup_bird()
 # Guide on http://bird.network.cz/ for more information on configuring BIRD and
 # adding routing protocols.
 
+# log "/var/log/bird.log" all;
+log syslog { info, remote, warning, error, auth, fatal, bug };
+
 # Change this into your BIRD router ID.
 router id $1;
 
@@ -128,19 +131,14 @@ protocol ospf {
 EOF
     bird -p
     birdc down
-    bird -R
+    # bird -R
+    systemctl start bird
     birdc show status
+    systemctl status bird
 }
 
-echo "CldInf Networker"
-if [ "$EUID" -ne 0 ]; then 
-    echo "Please run as root"
-    exit 1
-  elif [ $# -lt "1" ]; then
-    echo "Usage: $0 <name>"
-    echo " name = Client, MITM, [R1 .. R5]"
-    exit 1
-  else
+setup()
+{
     echo "Start setup for '$1'"
     case $1 in
         Client)
@@ -156,17 +154,20 @@ if [ "$EUID" -ne 0 ]; then
         R1)
             setup_hostname "R1"
             setup_ip "172.16.0.1/24" "10.0.1.3/8"
-            setup_bird "1.1.1.1" "10.0.0.0/8 via \"ens3\"" "172.16.0.0/24 via \"ens2\""
+            setup_bird "1.1.1.1" "172.16.0.0/24 via \"ens2\""
+            # "10.0.0.0/8 via \"ens3\"" 
             ;;
         R2)
             setup_hostname "R2"
             setup_ip "10.0.2.2/8" "10.0.2.3/8" "10.0.2.4/8"
-            setup_bird "2.2.2.2" "10.0.1.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.3.0/24 via \"ens4\""
+            setup_bird "2.2.2.2" 
+            # "10.0.1.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.3.0/24 via \"ens4\""
             ;;
         R3)
             setup_hostname "R3"
             setup_ip "10.0.3.2/8" "10.0.3.3/8" "10.0.3.4/8"
-            setup_bird "3.3.3.3" "10.0.2.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.5.0/24 via \"ens4\""
+            setup_bird "3.3.3.3" 
+            #"10.0.2.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.5.0/24 via \"ens4\""
             ;;
         R4)
             setup_hostname "R4"
@@ -176,7 +177,8 @@ if [ "$EUID" -ne 0 ]; then
         R5)
             setup_hostname "R5"
             setup_ip "10.0.5.2/8" "192.168.1.1/24"
-            setup_bird "5.5.5.5" "10.0.0.0/8 via \"ens2\"" "192.168.1.0/24 via \"ens3\""
+            setup_bird "5.5.5.5" "192.168.1.0/24 via \"ens3\""
+            # "10.0.0.0/8 via \"ens2\"" 
             ;;
         *)
             echo "name is unknewn..."
@@ -184,4 +186,24 @@ if [ "$EUID" -ne 0 ]; then
             ;;
     esac
     netplan apply
+}
+
+echo "CldInf Networker"
+if [ "$EUID" -ne 0 ]; then 
+    echo "Please run as root"
+    exit 1
+  elif [ $# -lt "1" ]; then
+    hostname=$(hostname)
+    case $hostname in
+        Client|MITM|R1|R2|R3|R4|R5)
+            setup $hostname
+            ;;
+        *)             
+            echo "Usage: $0 <name>"
+            echo " name = Client, MITM, [R1 .. R5]"
+            exit 1
+            ;;
+    esac
+  else
+    setup $1
 fi
