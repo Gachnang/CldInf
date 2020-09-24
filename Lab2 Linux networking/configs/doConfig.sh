@@ -127,9 +127,8 @@ protocol ospf {
 
 EOF
     bird -p
-    birdc configure
-    birdc reload all
-    birdc restart all
+    birdc down
+    bird -R
     birdc show status
 }
 
@@ -162,12 +161,12 @@ if [ "$EUID" -ne 0 ]; then
         R2)
             setup_hostname "R2"
             setup_ip "10.0.2.2/8" "10.0.2.3/8" "10.0.2.4/8"
-            setup_bird "2.2.2.2"
+            setup_bird "2.2.2.2" "10.0.1.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.3.0/24 via \"ens4\""
             ;;
         R3)
             setup_hostname "R3"
             setup_ip "10.0.3.2/8" "10.0.3.3/8" "10.0.3.4/8"
-            setup_bird "3.3.3.3" 
+            setup_bird "3.3.3.3" "10.0.2.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.5.0/24 via \"ens4\""
             ;;
         R4)
             setup_hostname "R4"
