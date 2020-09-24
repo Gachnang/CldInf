@@ -65,7 +65,7 @@ router id $1;
 # routes and it only serves as a module for getting information about network
 # interfaces from the kernel.
 protocol device {
-    scan time 10; # Scan interfaces every 10 seconds
+    scan time 1; # Scan interfaces every 10 seconds
 }
 
 # The Kernel protocol is not a real routing protocol. Instead of communicating
@@ -123,11 +123,10 @@ protocol ospf {
         interface "ens*" {
             cost 5;
             type broadcast;
-            hello 9;
-            retransmit 6;
-            transmit delay 5;
-            dead count 5;
-            wait 50;
+            hello 5; 
+            retransmit 2; 
+            wait 10; 
+            dead 20;
         };
 
         interface "*" {
@@ -164,30 +163,30 @@ setup()
             ;;
         R1)
             setup_hostname "R1"
-            setup_ip "172.16.0.1/24" "10.0.1.1/28"
+            setup_ip "172.16.0.1/24" "10.0.1.1/24"
             setup_bird "1.1.1.1" "172.16.0.0/24 via \"ens2\""
             # "10.0.0.0/8 via \"ens3\"" 
             ;;
         R2)
             setup_hostname "R2"
-            setup_ip "10.0.1.2/28" "10.0.4.1/28" "10.0.2.1/28"
+            setup_ip "10.0.1.2/24" "10.0.4.1/24" "10.0.2.1/24"
             setup_bird "2.2.2.2" 
             # "10.0.1.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.3.0/24 via \"ens4\""
             ;;
         R3)
             setup_hostname "R3"
-            setup_ip "10.0.2.2/28" "10.0.5.1/28" "10.0.3.1/28"
+            setup_ip "10.0.2.2/24" "10.0.5.1/24" "10.0.3.1/24"
             setup_bird "3.3.3.3" 
             #"10.0.2.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.5.0/24 via \"ens4\""
             ;;
         R4)
             setup_hostname "R4"
-            setup_ip "10.0.4.2/28" "10.0.5.2/28" "10.0.100.1/28"
+            setup_ip "10.0.4.2/24" "10.0.5.2/24" "10.0.100.1/24"
             setup_bird "4.4.4.4" 
             ;;
         R5)
             setup_hostname "R5"
-            setup_ip "10.0.3.2/28" "192.168.1.1/24"
+            setup_ip "10.0.3.2/24" "192.168.1.1/24"
             setup_bird "5.5.5.5" "192.168.1.0/24 via \"ens3\""
             # "10.0.0.0/8 via \"ens2\"" 
             ;;
