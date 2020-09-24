@@ -104,7 +104,7 @@ EOF
 }
 
 protocol ospf {
-    tick 10;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
+    tick 1;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
                     # state change arrives. To lower the CPU utilization, it's processed later at periodical intervals of num
                     # seconds. The default value is 1.
     import all;
@@ -138,7 +138,7 @@ protocol ospf {
 }
 
 EOF
-
+    sysctl net.ipv4.ip_forward=1
     ip route flush table main
     bird -p
     birdc down
