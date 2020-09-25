@@ -601,7 +601,7 @@ Wir versuchten ebenfalls mit \lstinline!tcpdump! die Pakete aufzufangen. Dies kl
   \hline
   \lstinline! sudo hostname <newHostName>! & Zum ändern des Hostnames \\
   \hline
-  \lstinline! sudo passwd <user> ! & Ändert das Passwort des momentanen Benutzers. \\
+  \lstinline! sudo passwd! & Ändert das Passwort des aktuellen Benutzers. \\
   \hline
   \lstinline! sudo birdc ! & Zum kommunizieren mit einem laufenden BIRD. Einzelne Befehle, die hier nicht aufgeführt sind, sind auf \cite{BIRD_COMMAND} zu finden. \\
   \hline
@@ -645,6 +645,22 @@ Verifikation der Routing unter \ref{sec:Verifizierung}.
 
 \subsection{Firewall}
 \label{subsec:Firewall}
+\begin{shadedquotation}
+	The next step is to implement a firewall in your network. On Linux, netfilter was the kernel
+	firewall for a long time. To configure netfilter, tools like iptables, ip6tables, arptables and so
+	on were used. But for this task, you’ll have to use the more modern nftables and its nft utility
+	to configure it.
+	First, check all open ports of the webserver from your client with nmap. Your firewall solution
+	must fulfill the following requirements:
+	\begin{itemize}
+		\item You must use nftables and its utility nft. Do not use iptables.
+		\item The firewall must run on one of the routers.
+		\item The website is only accessible from the clients network (172.16.0.0/24).
+		\item Pings must not be answered.
+		\item nmap must not show any open ports.
+		Check if your firewall works by executing nmap again.
+	\end{itemize}
+\end{shadedquotation}
 
 \begin{shadedquotation}
   We’re interested in the used \lstinline!nmap! command, where the firewall runs and why you’ve choosen that location. Print the ruleset of the firewall and attach it to your report.
