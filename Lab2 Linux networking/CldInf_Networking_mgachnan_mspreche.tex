@@ -1,6 +1,6 @@
 \documentclass[11pt,titlepage]{article}
 \usepackage{ucs}
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
 \usepackage{graphicx}
@@ -568,6 +568,9 @@ fi
   Show that no OSPF packets are sent into the client and server networks,too.\lstinline!tcpdump! and \lstinline!tshark! are good tools for that, sniff on the suspicious interfaces and filter for OSPFv2 packets. To be sure that your filter works, sniff on an interface where you expect OSPF-messages, too.
 \end{shadedquotation}
 
+Wir haben versucht, anhand von Wireshark mit ''Sshdump'' und ''Ciscodump'' auf den Interfaces zu lauschen, erhielten aber keine Pakete.
+Wir versuchten ebenfalls mit \lstinline!tcpdump! die Pakete aufzufangen. Dies klappe zwar, aber das pcap-File wollte sich einfach nicht übertragen lassen. Wir sind anhand von \cite{TCPDUMP} vorgegangen.
+
 \subsection{Access Website}
 \label{subsec:AccessWebsite}
 \begin{shadedquotation}
@@ -596,11 +599,11 @@ fi
   \hline
   \lstinline! sudo nano <Pfad> ! & Öffnen eines Files im Texteditor \\
   \hline
-  \lstinline! sudo nano hostname <newHostName>! & Zum ändern des Hostnames \\
+  \lstinline! sudo hostname <newHostName>! & Zum ändern des Hostnames \\
   \hline
-  \lstinline! sudo nano passwd <user> ! & Editieren vom passwd file im Terminal \\
+  \lstinline! sudo passwd <user> ! & Ändert das Passwort des momentanen Benutzers. \\
   \hline
-  \lstinline! sudo birdc ! & Zum kommunizieren mit einem laufenden BIRD \\
+  \lstinline! sudo birdc ! & Zum kommunizieren mit einem laufenden BIRD. Einzelne Befehle, die hier nicht aufgeführt sind, sind auf \cite{BIRD_COMMAND} zu finden. \\
   \hline
   \lstinline! sudo birdc show status ! & Anzeigen vom router status, BIRD version, Laufzeit und Zeitpunkt von der letzten Rekonfiguration. \\
   \hline
