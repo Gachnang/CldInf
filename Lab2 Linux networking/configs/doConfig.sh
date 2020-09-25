@@ -65,7 +65,7 @@ router id $1;
 # routes and it only serves as a module for getting information about network
 # interfaces from the kernel.
 protocol device {
-    scan time 1; # Scan interfaces every 10 seconds
+    scan time 10; # Scan interfaces every 10 seconds
 }
 
 # The Kernel protocol is not a real routing protocol. Instead of communicating
@@ -104,7 +104,7 @@ EOF
 }
 
 protocol ospf {
-    tick 1;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
+    tick 10;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
                     # state change arrives. To lower the CPU utilization, it's processed later at periodical intervals of num
                     # seconds. The default value is 1.
     import all;
