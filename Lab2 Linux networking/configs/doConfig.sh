@@ -159,7 +159,7 @@ setup()
         MITM)
             setup_hostname "MITM"
             setup_ip "10.0.100.2"
-            echo "            gateway4: 10.0.4.4" >> '/etc/netplan/50-cloud-init.yaml'
+            echo "            gateway4: 10.0.100.1" >> '/etc/netplan/50-cloud-init.yaml'
             ;;
         R1)
             setup_hostname "R1"
