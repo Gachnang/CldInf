@@ -556,6 +556,13 @@ fi
   Verify your routing implementation. Explain which exact commands you used for each verification step and show how they provide prove that your setup works.
 \end{shadedquotation}
 
+Zuerst haben wir die IP-Vergabe überprüft und von jedem Router aus seine Nachbarn mit dem Befehl \lstinline!ping! angepingt. So haben wir als Beispiel von ''R3'' aus ''R2'', ''R4'' und ''R5'' angepingt.
+Alle Pings waren erfolgreich.
+
+\medskip
+
+Anschliessend haben wir von ''R1'' jedes andere Gerät mit \lstinline!ping! angepingt und so erkennen können, dass die Routes funktionieren. Zusätzlich haben wir auch eine Routes genauer mit \lstinline!tcptraceroute! untersucht und konnten die Verbindung anhand des Netplans (\autoref{fig:Netplan}) nachverfolgen.  
+
 \subsection{Route Failover}
 \label{subsec:RouteFailover}
 \begin{shadedquotation}
