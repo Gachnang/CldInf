@@ -555,6 +555,7 @@ fi
 \begin{shadedquotation}
   Verify your routing implementation. Explain which exact commands you used for each verification step and show how they provide prove that your setup works.
 \end{shadedquotation}
+Verifizierung mit pings und tcptraceroute, sowie 
 
 \subsection{Route Failover}
 \label{subsec:RouteFailover}
@@ -619,9 +620,9 @@ Wir versuchten ebenfalls mit \lstinline!tcpdump! die Pakete aufzufangen. Dies kl
   \hline
   \lstinline! tcptraceroute <ip> ! & Zum Anzeigen vom Pfad im Netzwerk vom Host, auf dem die Traceroute ausgeführt wird, und der angegebenen IP, sowie dem Ort, an dem die Route, falls vorhanden, nicht abgeschlossen werden kann und allen Hops bis zum Ziel. \\
   \hline
-  \lstinline! blub ! & blob \\
+  \lstinline! sysctl net.ipv4.ip_forward=1 ! & blob \\ Mit dem Befehl wird das weiterleiten der Packete erlaubt.
   \hline
-  \lstinline! blub ! & blob \\
+  \lstinline! sudo reboot ! & blob \\ Neustarten des Geräts.
   \hline
   \lstinline! blub ! & blob \\
   \hline
