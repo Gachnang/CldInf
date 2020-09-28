@@ -158,7 +158,7 @@ setup()
             ;;
         MITM)
             setup_hostname "MITM"
-            setup_ip "10.0.100.2"
+            setup_ip "10.0.100.2/24"
             echo "            gateway4: 10.0.100.1" >> '/etc/netplan/50-cloud-init.yaml'
             ;;
         R1)
@@ -169,25 +169,25 @@ setup()
             ;;
         R2)
             setup_hostname "R2"
-            setup_ip "10.0.1.2/24" "ens*" "10.0.4.1/24" "10.0.2.1/24"
-            setup_bird "2.2.2.2" 
+            setup_ip "10.0.1.2/24" "10.0.4.1/24" "10.0.2.1/24"
+            setup_bird "2.2.2.2" "ens*" 
             # "10.0.1.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.3.0/24 via \"ens4\""
             ;;
         R3)
             setup_hostname "R3"
-            setup_ip "10.0.2.2/24" "ens*" "10.0.5.1/24" "10.0.3.1/24"
-            setup_bird "3.3.3.3" 
+            setup_ip "10.0.2.2/24" "10.0.5.1/24" "10.0.3.1/24"
+            setup_bird "3.3.3.3" "ens*" 
             #"10.0.2.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.5.0/24 via \"ens4\""
             ;;
         R4)
             setup_hostname "R4"
-            setup_ip "10.0.4.2/24" "ens*" "10.0.5.2/24" "10.0.100.1/24"
-            setup_bird "4.4.4.4" 
+            setup_ip "10.0.4.2/24" "10.0.5.2/24" "10.0.100.1/24"
+            setup_bird "4.4.4.4" "ens*" 
             ;;
         R5)
             setup_hostname "R5"
-            setup_ip "10.0.3.2/24" "ens2" "192.168.1.1/24"
-            setup_bird "5.5.5.5" "192.168.1.0/24 via \"ens3\""
+            setup_ip "10.0.3.2/24" "192.168.1.1/24"
+            setup_bird "5.5.5.5" "ens2" "192.168.1.0/24 via \"ens3\""
             # "10.0.0.0/8 via \"ens2\"" 
             ;;
         *)
