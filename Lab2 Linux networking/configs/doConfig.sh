@@ -21,6 +21,7 @@ network:
     ethernets:
 EOF
     if [ $# -ge "1" ]; then
+        ifconfig ens2 down
         echo " ens2 = $1"
         cat <<EOF >> '/etc/netplan/50-cloud-init.yaml'
         ens2:
@@ -29,6 +30,7 @@ EOF
 EOF
     fi
     if [ $# -ge "2" ]; then
+        ifconfig ens3 down
         echo " ens3 = $2"
         cat <<EOF >> '/etc/netplan/50-cloud-init.yaml'
         ens3:
@@ -37,12 +39,25 @@ EOF
 EOF
     fi
     if [ $# -ge "3" ]; then
+        ifconfig ens4 down
         echo " ens4 = $3"
         cat <<EOF >> '/etc/netplan/50-cloud-init.yaml'
         ens4:
             dhcp4: false
             addresses: [$3]
 EOF
+    fi
+    
+    netplan apply
+    
+    if [ $# -ge "1" ]; then
+        ifconfig ens2 up
+    fi
+    if [ $# -ge "2" ]; then
+        ifconfig ens3 up
+    fi
+    if [ $# -ge "3" ]; then
+        ifconfig ens4 up
     fi
 }
 
@@ -195,7 +210,6 @@ setup()
             exit 1
             ;;
     esac
-    netplan apply
 }
 
 echo "CldInf Networker"
