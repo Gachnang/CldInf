@@ -318,7 +318,7 @@ Wir haben eine Vorlage aus dem Internet übernommen \cite{BIRD_EXAMPLE} und die 
 \subsection{IP Forwarding}
 \label{subsec:IPForwarding}
 
-''IP-Forwarding'' ist standartgemäs ausgeschaltet. Mit \lstinline{sysctl net.ipv4.ip_forward=1} aktivieren wird das weiterleiten der Packete erlaubt.
+''IP-Forwarding'' ist standartgemäs ausgeschaltet. Mit \lstinline!sysctl net.ipv4.ip_forward=1! aktivieren wird das weiterleiten der Packete erlaubt.
 
 \par\medskip
 
@@ -425,7 +425,7 @@ EOF
     for var in "$@"
     do
         echo " $var"
-        if [ "$var" != "$1" ]; then
+        if [ "$var" != "$1" ] && [ "$var" != "$2" ]; then
             echo "        route $var;" >> '/etc/bird/bird.conf'
         fi
     done
@@ -450,7 +450,7 @@ protocol ospf {
             192.168.1.0/24;
         };
         
-        interface "ens*" {
+        interface "$2" {
             cost 5;
             type broadcast;
             hello 5; 
@@ -494,29 +494,29 @@ setup()
         R1)
             setup_hostname "R1"
             setup_ip "172.16.0.1/24" "10.0.1.1/24"
-            setup_bird "1.1.1.1" "172.16.0.0/24 via \"ens2\""
+            setup_bird "1.1.1.1" "ens3" "172.16.0.0/24 via \"ens2\""
             # "10.0.0.0/8 via \"ens3\"" 
             ;;
         R2)
             setup_hostname "R2"
-            setup_ip "10.0.1.2/24" "10.0.4.1/24" "10.0.2.1/24"
+            setup_ip "10.0.1.2/24" "ens*" "10.0.4.1/24" "10.0.2.1/24"
             setup_bird "2.2.2.2" 
             # "10.0.1.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.3.0/24 via \"ens4\""
             ;;
         R3)
             setup_hostname "R3"
-            setup_ip "10.0.2.2/24" "10.0.5.1/24" "10.0.3.1/24"
+            setup_ip "10.0.2.2/24" "ens*" "10.0.5.1/24" "10.0.3.1/24"
             setup_bird "3.3.3.3" 
             #"10.0.2.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.5.0/24 via \"ens4\""
             ;;
         R4)
             setup_hostname "R4"
-            setup_ip "10.0.4.2/24" "10.0.5.2/24" "10.0.100.1/24"
+            setup_ip "10.0.4.2/24" "ens*" "10.0.5.2/24" "10.0.100.1/24"
             setup_bird "4.4.4.4" 
             ;;
         R5)
             setup_hostname "R5"
-            setup_ip "10.0.3.2/24" "192.168.1.1/24"
+            setup_ip "10.0.3.2/24" "ens2" "192.168.1.1/24"
             setup_bird "5.5.5.5" "192.168.1.0/24 via \"ens3\""
             # "10.0.0.0/8 via \"ens2\"" 
             ;;
@@ -547,6 +547,7 @@ if [ "$EUID" -ne 0 ]; then
   else
     setup $1
 fi
+
 
 \end{lstlisting}
 
@@ -587,7 +588,7 @@ Wir versuchten ebenfalls mit \lstinline!tcpdump! die Pakete aufzufangen. Dies kl
 
 \medskip
 
-Wir können es zwar nicht beweisen, aber anhand von der Konfiguration von Bird und OSPF haben wir definiert, dass jeweils nur die Interfaces aktiv sind, bei welchem weitere Router sind. So hat ''R1'' nur ein Interface ''ens3'' auf welches Bird reagiert. Das gleiche ist bei ''R5'' bei welchem nur das Interface ''ens2'' konfiguriert ist.
+Wir können es zwar nicht beweisen, aber anhand von der Konfiguration von Bird und OSPF haben wir definiert, dass jeweils nur die Interfaces aktiv sind, bei welchem weitere Router sind. So hat ''R1'' nur ein Interface ''ens3'' auf welches Bird reagiert. Das gleiche ist bei ''R5'' bei welchem nur das Interface ''ens2'' konfiguriert ist. Alle anderen interfaces sind als ''stub'' definiert.
 
 \subsection{Access Website}
 \label{subsec:AccessWebsite}
