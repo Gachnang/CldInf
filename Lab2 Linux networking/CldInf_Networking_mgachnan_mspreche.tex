@@ -557,11 +557,24 @@ fi
 \end{shadedquotation}
 Verifizierung mit pings und tcptraceroute, sowie 
 
+Zuerst haben wir die IP-Vergabe überprüft und von jedem Router aus seine Nachbarn mit dem Befehl \lstinline!ping! angepingt. So haben wir als Beispiel von ''R3'' aus ''R2'', ''R4'' und ''R5'' angepingt.
+Alle Pings waren erfolgreich.
+
+\medskip
+
+Anschliessend haben wir von ''R1'' jedes andere Gerät mit \lstinline!ping! angepingt und so erkennen können, dass die Routes funktionieren. Zusätzlich haben wir auch eine Routes genauer mit \lstinline!tcptraceroute! untersucht und konnten die Verbindung anhand des Netplans (\autoref{fig:Netplan}) nachverfolgen.  
+
 \subsection{Route Failover}
 \label{subsec:RouteFailover}
 \begin{shadedquotation}
   Verify that your setup works. Prove that a route failover takes place in case ofa route outage. To do that, a well known tool can be used.
 \end{shadedquotation}
+
+Uns ist leider kein solches ''well known tool'' bekannt, weshalb wir manuell gewisse Interfaces der Router mit \lstinline!ifconfig ens2 down! ausgeschaltet haben während ein anderer Routern \lstinline!ping! ausgeführt hat. Es dauerte zwar einige Sekunden (etwa 20 Sekunden) bis die Verbindung wieder stand, aber der Route Failover funktionierte.
+
+\medskip
+
+Wir haben von ''R1'' aus gepingt und bei ''R2'' jeweils die Interface aus- und eingeschaltet.
 
 \subsection{Passive Interfaces}
 \label{subsec:PassiveInterfaces}
@@ -571,6 +584,10 @@ Verifizierung mit pings und tcptraceroute, sowie
 
 Wir haben versucht, anhand von Wireshark mit ''Sshdump'' und ''Ciscodump'' auf den Interfaces zu lauschen, erhielten aber keine Pakete.
 Wir versuchten ebenfalls mit \lstinline!tcpdump! die Pakete aufzufangen. Dies klappe zwar, aber das pcap-File wollte sich einfach nicht übertragen lassen. Wir sind anhand von \cite{TCPDUMP} vorgegangen.
+
+\medskip
+
+Wir können es zwar nicht beweisen, aber anhand von der Konfiguration von Bird und OSPF haben wir definiert, dass jeweils nur die Interfaces aktiv sind, bei welchem weitere Router sind. So hat ''R1'' nur ein Interface ''ens3'' auf welches Bird reagiert. Das gleiche ist bei ''R5'' bei welchem nur das Interface ''ens2'' konfiguriert ist.
 
 \subsection{Access Website}
 \label{subsec:AccessWebsite}
