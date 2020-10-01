@@ -162,6 +162,38 @@ EOF
     systemctl status bird
 }
 
+setup_firewall()
+{
+    nft add rule ip filter input ip saddr . ip daddr { 172.16.0.0/24 . 192.168.1.0/24 } counter accept
+    echo "Setup firewall"
+    cat <<EOF > '/etc/nftable.conf'
+#!/usr/sbin/nft -f
+# This file is generated from information provided by $0
+
+flush ruleset
+
+# ----- IPv4 -----
+table ip filter {
+	chain input {
+		type filter hook input priority 0; policy accept;
+	}
+
+	chain forward {
+		type filter hook forward priority 0; policy drop;
+        ip saddr 192.168.1.0/24 ip daddr 172.16.0.0/24 accept comment "accept everything from 192.168.1.0/24 to 172.16.0.0/24"
+        ip saddr 172.16.0.0/24 ip daddr 192.168.1.0/24 tcp dport 8080 accept comment "accept from 172.16.0.0/24 to 172.16.0.0/24:8080"
+        ip protocol icmp drop comment "drop all ICMP types"
+	}
+
+	chain output {
+		type filter hook output priority 0; policy accept;
+	}
+}
+
+EOF
+    nft -f /etc/nftables.conf
+}
+
 setup()
 {
     echo "Start setup for '$1'"
@@ -203,7 +235,8 @@ setup()
             setup_hostname "R5"
             setup_ip "10.0.3.2/24" "192.168.1.1/24"
             setup_bird "5.5.5.5" "ens2" "192.168.1.0/24 via \"ens3\""
-            # "10.0.0.0/8 via \"ens2\"" 
+            # "10.0.0.0/8 via \"ens2\""
+            setup_firewall
             ;;
         *)
             echo "name is unknewn..."

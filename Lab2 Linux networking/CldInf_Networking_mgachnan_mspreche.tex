@@ -267,10 +267,45 @@ Wir haben eine Vorlage aus dem Internet übernommen \cite{BIRD_EXAMPLE} und die 
 \end{shadedquotation}
 
 Das Router-Netzwerk ''10.0.0.0/8'' sollte unserer Meinung nach keine anderen Komponenten enthalten als Router, daher würden wir die Firewall jeweils an den Ein- und Ausgängen zum Netzwerk platzieren. Das wäre auf ''R1'' und ''R5''.
-\medskip
+\par\medskip
 Nach der Definition, das nur eine Firewall definiert werden soll, gehen wir davon aus, dass das Netzwerk ''172.16.0.0/24'' das ein lokales Netzwerk ist und ''10.0.0.0/8'' das Internet. Demnach müssen wir unser DMZ-Netzwerk schützen, die Firewall wird also auf ''R5'' etabliert.
-\medskip
+\par\medskip
 
+Zuerst testen wir mit \lstinline!nmap! vom ''Client'' aus, was alles beim ''Server'' offen ist:
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.90\textwidth]{images/firewall-before.png}
+    \caption{Firewall bevor}
+    \label{fig:FirewallBefore}
+  \end{center}
+\end{figure}
+
+Dann beginnen wir mit der Konfiguration von \lstinline!nftables!.
+
+Zuerst definieren wir, das beim ''forward'' alle Packete standardmässig verworfen werden. (Zeile 13)
+
+Dann erlauben wir dass alles von ''192.168.1.0/24'' nach ''172.16.0.0/24'', um auch eine Antwort schicken zu können. (Zeile 14)
+
+Anschliessend darf von ''172.16.0.0/24'' nach ''192.168.1.0/24'' nur Packete, die TCP-Port 8080 sind. (Zeile 15)
+
+Zum Schluss verwerfen wir explicit alle ''ICMP'' (Pings, Zeile 16). Diese Zeile kann auch weggelassen werden, wurde aber für die vollständigkeit ergänzt.
+
+\lstinputlisting[language=bash,caption={/etc/nftables.conf on R5}]{configs/R5/etc/nftables.conf}
+
+Die neue Konfiguration übernehmen wir mit dem Befehl \lstinline!nft -f /etc/nftables.conf!.
+
+Vom Client aus untersuchen wir das Ergebnis:
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.90\textwidth]{images/firewall-after.png}
+    \caption{Firewall danach}
+    \label{fig:FirewallBefore}
+  \end{center}
+\end{figure}
+
+\lstinline!Ping!s erreichen den Server nicht mehr, auch \lstinline!nmap! findet sein Ziel nicht. Jedoch funktioniert \lstinline!wget 192.168.1.100:8080! genau wie zuvor. 
+
+\par\medskip
 
 \subsection{Script}
 \label{subsec:Script}
