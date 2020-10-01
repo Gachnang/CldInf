@@ -244,7 +244,33 @@ Wir haben eine Vorlage aus dem Internet übernommen \cite{BIRD_EXAMPLE} und die 
 
 ''IP-Forwarding'' ist standartgemäs ausgeschaltet. Mit \lstinline!sysctl net.ipv4.ip_forward=1! aktivieren wird das weiterleiten der Packete erlaubt.
 
-\par\medskip
+\subsection{Firewall}
+\label{subsec:Firewall}
+\begin{shadedquotation}
+	The next step is to implement a firewall in your network. On Linux, netfilter was the kernel
+	firewall for a long time. To configure netfilter, tools like iptables, ip6tables, arptables and so
+	on were used. But for this task, you’ll have to use the more modern nftables and its nft utility
+	to configure it.
+	First, check all open ports of the webserver from your client with nmap. Your firewall solution
+	must fulfill the following requirements:
+	\begin{itemize}
+		\item You must use nftables and its utility nft. Do not use iptables.
+		\item The firewall must run on one of the routers.
+		\item The website is only accessible from the clients network (172.16.0.0/24).
+		\item Pings must not be answered.
+		\item nmap must not show any open ports. Check if your firewall works by executing nmap again.
+	\end{itemize}
+\end{shadedquotation}
+
+\begin{shadedquotation}
+  We’re interested in the used \lstinline!nmap! command, where the firewall runs and why you’ve choosen that location. Print the ruleset of the firewall and attach it to your report.
+\end{shadedquotation}
+
+Das Router-Netzwerk ''10.0.0.0/8'' sollte unserer Meinung nach keine anderen Komponenten enthalten als Router, daher würden wir die Firewall jeweils an den Ein- und Ausgängen zum Netzwerk platzieren. Das wäre auf ''R1'' und ''R5''.
+\medskip
+Nach der Definition, das nur eine Firewall definiert werden soll, gehen wir davon aus, dass das Netzwerk ''172.16.0.0/24'' das ein lokales Netzwerk ist und ''10.0.0.0/8'' das Internet. Demnach müssen wir unser DMZ-Netzwerk schützen, die Firewall wird also auf ''R5'' etabliert.
+\medskip
+
 
 \subsection{Script}
 \label{subsec:Script}
@@ -312,7 +338,7 @@ Wir können es zwar nicht beweisen, aber anhand von der Konfiguration von Bird u
 \begin{shadedquotation}
   Finally, you must be able to access the webpage from the webserver. You can use \lstinline!curl! or \lstinline!wget! for that. The webserver listens on port 8080.
 \end{shadedquotation}
-Der Zugriff auf die Webseite ist möglich.
+Vom ''Client'' aus funktionierte der Zugriff auf die Webseite vom ''Server''.
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=0.90\textwidth]{"images/Verifikation Access Website"}
@@ -328,33 +354,6 @@ Der Zugriff auf die Webseite ist möglich.
   
   Provide the exact used \lstinline!tc! commands.
 \end{shadedquotation}
-
-\section{Firewall}
-\label{sec:Firewall}
-\begin{shadedquotation}
-	The next step is to implement a firewall in your network. On Linux, netfilter was the kernel
-	firewall for a long time. To configure netfilter, tools like iptables, ip6tables, arptables and so
-	on were used. But for this task, you’ll have to use the more modern nftables and its nft utility
-	to configure it.
-	First, check all open ports of the webserver from your client with nmap. Your firewall solution
-	must fulfill the following requirements:
-	\begin{itemize}
-		\item You must use nftables and its utility nft. Do not use iptables.
-		\item The firewall must run on one of the routers.
-		\item The website is only accessible from the clients network (172.16.0.0/24).
-		\item Pings must not be answered.
-		\item nmap must not show any open ports. Check if your firewall works by executing nmap again.
-	\end{itemize}
-\end{shadedquotation}
-
-\begin{shadedquotation}
-  We’re interested in the used \lstinline!nmap! command, where the firewall runs and why you’ve choosen that location. Print the ruleset of the firewall and attach it to your report.
-\end{shadedquotation}
-
-Das Router-Netzwerk ''10.0.0.0/8'' sollte unserer Meinung nach keine anderen Komponenten enthalten asl Router, daher würden wir die Firewall jeweils an den Ein- und Ausgängen zum Netzwerk platzieren. Das wäre auf ''R1'' und ''R5''.
-\medskip
-Nach der Definition, das nur eine Firewall definiert werden soll, gehen wir davon aus, dass das Netzwerk ''172.16.0.0/24'' das Internet (oder VPN-Netzwerk) ist. Demnach müssen wir unser Router- und DMZ-Netzwerk schützen, was die Position der Firewall möglich am Anfang nötigt macht. Die Firewall wird also auf ''R1'' etabliert.
-\medskip
 
 \section{Referenzblatt}
 \label{sec:Referenzblatt}
