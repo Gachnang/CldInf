@@ -21,6 +21,14 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{ReducingBGP}
+\BIBentryALTinterwordspacing
+{G. Huston, M. Rossi, and G. Armitage}, \emph{A Technique for Reducing BGP
+  Update Announcements through Path Exploration Damping}.\hskip 1em plus 0.5em
+  minus 0.4em\relax {Selected Areas in Communications}, October 2010. [Online].
+  Available: \url{https://www.potaroo.net/papers/ieee/bgp_updates_2010.pdf}
+\BIBentrySTDinterwordspacing
+
 \bibitem{BIRD_EXAMPLE}
 \BIBentryALTinterwordspacing
 {Ondrej Sury}, ``Ospf{\_}example · wiki · labs / bird internet routing daemon

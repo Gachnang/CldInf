@@ -70,7 +70,7 @@ setup_bird()
 # Guide on http://bird.network.cz/ for more information on configuring BIRD and
 # adding routing protocols.
 
-# log "/var/log/bird.log" all;
+# log "/var/log/bird.log" all; # Log all in logfile: Commented out because af access error..
 log syslog { info, remote, warning, error, auth, fatal, bug };
 
 # Change this into your BIRD router ID.
@@ -91,7 +91,7 @@ protocol kernel {
                     # with non-BIRD routes in the kernel routing table
     persist;        # Don't remove routes on BIRD shutdown
     scan time 20;   # Scan kernel routing table every 20 seconds
-    import none;
+#    import none;    # Default is import all
     export all;     # Actually insert routes into the kernel routing table
 }
 
@@ -119,7 +119,7 @@ EOF
 }
 
 protocol ospf {
-    tick 10;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
+    tick 5;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
                     # state change arrives. To lower the CPU utilization, it's processed later at periodical intervals of num
                     # seconds. The default value is 1.
     import all;
@@ -136,12 +136,12 @@ protocol ospf {
         };
         
         interface "$2" {
-            cost 5;
+            cost 10;
             type broadcast;
-            hello 5; 
-            retransmit 2; 
-            wait 10; 
-            dead 20;
+            hello 9; 
+            retransmit 6; 
+            wait 50; 
+            dead 5;
         };
 
         interface "*" {
