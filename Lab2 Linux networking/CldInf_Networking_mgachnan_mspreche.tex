@@ -281,7 +281,7 @@ Wir haben von ''R1'' aus nach ''Server'' \lstinline!tcptraceroute!d und bei ''R3
   \begin{center}
     \includegraphics[width=0.90\textwidth]{images/tcptracert_R3-ens2-down.png}
     \caption{Tracert von R1 zu Server: R3-ens2 down}
-    \label{fig:Netplan}
+    \label{fig:RouteFailoverDown}
   \end{center}
 \end{figure}
 
@@ -289,7 +289,7 @@ Wir haben von ''R1'' aus nach ''Server'' \lstinline!tcptraceroute!d und bei ''R3
   \begin{center}
     \includegraphics[width=0.90\textwidth]{images/tcptracert_R3-ens2-up.png}
     \caption{Tracert von R1 zu Server: R3-ens2 up again}
-    \label{fig:Netplan}
+    \label{fig:RouteFailoverUp}
   \end{center}
 \end{figure}
 
@@ -354,6 +354,33 @@ Der Zugriff auf die Webseite ist möglich.
   Provide the exact used \lstinline!tc! commands.
 \end{shadedquotation}
 
+\section{Firewall}
+\label{sec:Firewall}
+\begin{shadedquotation}
+	The next step is to implement a firewall in your network. On Linux, netfilter was the kernel
+	firewall for a long time. To configure netfilter, tools like iptables, ip6tables, arptables and so
+	on were used. But for this task, you’ll have to use the more modern nftables and its nft utility
+	to configure it.
+	First, check all open ports of the webserver from your client with nmap. Your firewall solution
+	must fulfill the following requirements:
+	\begin{itemize}
+		\item You must use nftables and its utility nft. Do not use iptables.
+		\item The firewall must run on one of the routers.
+		\item The website is only accessible from the clients network (172.16.0.0/24).
+		\item Pings must not be answered.
+		\item nmap must not show any open ports. Check if your firewall works by executing nmap again.
+	\end{itemize}
+\end{shadedquotation}
+
+\begin{shadedquotation}
+  We’re interested in the used \lstinline!nmap! command, where the firewall runs and why you’ve choosen that location. Print the ruleset of the firewall and attach it to your report.
+\end{shadedquotation}
+
+Das Router-Netzwerk ''10.0.0.0/8'' sollte unserer Meinung nach keine anderen Komponenten enthalten asl Router, daher würden wir die Firewall jeweils an den Ein- und Ausgängen zum Netzwerk platzieren. Das wäre auf ''R1'' und ''R5''.
+\medskip
+Nach der Definition, das nur eine Firewall definiert werden soll, gehen wir davon aus, dass das Netzwerk ''172.16.0.0/24'' das Internet (oder VPN-Netzwerk) ist. Demnach müssen wir unser Router- und DMZ-Netzwerk schützen, was die Position der Firewall möglich am Anfang nötigt macht. Die Firewall wird also auf ''R1'' etabliert.
+\medskip
+
 \section{Referenzblatt}
 \label{sec:Referenzblatt}
 \begin{shadedquotation}
@@ -411,28 +438,6 @@ Der Zugriff auf die Webseite ist möglich.
 \end{shadedquotation}
 Erarbeitung der BIRD-config ist im \ref{subsec:BIRD} erläutert.
 Verifikation der Routing unter \ref{sec:Verifizierung}.
-
-\subsection{Firewall}
-\label{subsec:Firewall}
-\begin{shadedquotation}
-	The next step is to implement a firewall in your network. On Linux, netfilter was the kernel
-	firewall for a long time. To configure netfilter, tools like iptables, ip6tables, arptables and so
-	on were used. But for this task, you’ll have to use the more modern nftables and its nft utility
-	to configure it.
-	First, check all open ports of the webserver from your client with nmap. Your firewall solution
-	must fulfill the following requirements:
-	\begin{itemize}
-		\item You must use nftables and its utility nft. Do not use iptables.
-		\item The firewall must run on one of the routers.
-		\item The website is only accessible from the clients network (172.16.0.0/24).
-		\item Pings must not be answered.
-		\item nmap must not show any open ports. Check if your firewall works by executing nmap again.
-	\end{itemize}
-\end{shadedquotation}
-
-\begin{shadedquotation}
-  We’re interested in the used \lstinline!nmap! command, where the firewall runs and why you’ve choosen that location. Print the ruleset of the firewall and attach it to your report.
-\end{shadedquotation}
 
 \subsection{Quellennachweis}
 \label{subsec:Quellennachweis}
