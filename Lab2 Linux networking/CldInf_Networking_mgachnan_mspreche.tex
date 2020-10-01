@@ -271,11 +271,28 @@ Anschliessend haben wir von ''R1'' jedes andere Gerät mit \lstinline!ping! ange
   Verify that your setup works. Prove that a route failover takes place in case ofa route outage. To do that, a well known tool can be used.
 \end{shadedquotation}
 
-Uns ist leider kein solches ''well known tool'' bekannt, weshalb wir manuell gewisse Interfaces der Router mit \lstinline!ifconfig ens2 down! ausgeschaltet haben während ein anderer Routern \lstinline!ping! ausgeführt hat. Es dauerte zwar einige Sekunden (etwa 20 Sekunden) bis die Verbindung wieder stand, aber der Route Failover funktionierte.
+Wir haben manuell gewisse Interfaces der Router mit \lstinline!ifconfig ens2 down! ausgeschaltet haben während ein anderer Routern \lstinline!ping! ausgeführt hat. Es dauerte zwar einige Sekunden (etwa 10 Sekunden) bis die Verbindung wieder stand, aber der Route Failover funktionierte.
 
 \medskip
 
-Wir haben von ''R1'' aus gepingt und bei ''R2'' jeweils die Interface aus- und eingeschaltet.
+Wir haben von ''R1'' aus nach ''Server'' \lstinline!tcptraceroute!d und bei ''R3'' jeweils die Interface aus- und eingeschaltet.
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.90\textwidth]{images/tcptracert_R3-ens2-down.png}
+    \caption{Tracert von R1 zu Server: R3-ens2 down}
+    \label{fig:Netplan}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.90\textwidth]{images/tcptracert_R3-ens2-up.png}
+    \caption{Tracert von R1 zu Server: R3-ens2 up again}
+    \label{fig:Netplan}
+  \end{center}
+\end{figure}
+
 
 \subsection{Passive Interfaces}
 \label{subsec:PassiveInterfaces}
@@ -376,8 +393,7 @@ Verifikation der Routing unter \ref{sec:Verifizierung}.
 		\item The firewall must run on one of the routers.
 		\item The website is only accessible from the clients network (172.16.0.0/24).
 		\item Pings must not be answered.
-		\item nmap must not show any open ports.
-		Check if your firewall works by executing nmap again.
+		\item nmap must not show any open ports. Check if your firewall works by executing nmap again.
 	\end{itemize}
 \end{shadedquotation}
 
