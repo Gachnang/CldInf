@@ -14,7 +14,6 @@
 \usepackage{wrapfig}
 \usepackage{float}
 \usepackage{subcaption}
-\usepackage{verbatim}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -197,22 +196,9 @@ Wird setzten das Passwort des jeweiligen Containers auf seinen Namen mit \lstinl
 Die Adressen sind so definiert, dass jede Verbindung ein eigenes Subnet hat. Bird sucht seine Nachbarn anhand des Broadcasts.
 
 Wir ändern den netplan mit \lstinline!sudo nano /etc/netplan/50-cloud-init.yaml!.
-\begin{lstlisting}[language=bash,caption={/etc/netplan/50-cloud-init.yaml on R1}]
-# This file is generated from information provided by
-# the datasource.  Changes to it will not persist across an instance.
-# To disable cloud-init's network configuration capabilities, write a file
-# /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:
-# network: {config: disabled}
-network:
-    version: 2
-    ethernets:
-        ens2:
-            dhcp4: false
-            addresses: [172.16.0.1/24]
-        ens3:
-        	dhcp4: false
-        	addresses: [10.0.1.1/24]
-\end{lstlisting}
+
+
+\lstinputlisting[language=bash,caption={/etc/netplan/50-cloud-init.yaml on R1}]{configs/R1/etc/netplan/50-cloud-init.yaml}
 
 Mit \lstinline!netplan apply! übernehmen wir die neu definierten IP-Adressen.
 
@@ -231,84 +217,7 @@ Wir definieren die Configuration von Bird indem wir ''/etc/bird/bird.conf'' anpa
 
 Um die Auslastung von CPU und Netzwerk zu vermindern, haben wir uns an \cite{ReducingBGP} orientiert.
 
-\begin{lstlisting}[language=bash,caption={/etc/bird/bird.conf on R1}]
-# This file is generated from information provided by $0
-# Please refer to the documentation in the bird-doc package or BIRD User's
-# Guide on http://bird.network.cz/ for more information on configuring BIRD and
-# adding routing protocols.
-
-# log "/var/log/bird.log" all;
-log syslog { info, remote, warning, error, auth, fatal, bug };
-
-# Change this into your BIRD router ID.
-router id 1.1.1.1;
-
-# The Device protocol is not a real routing protocol. It doesn't generate any
-# routes and it only serves as a module for getting information about network
-# interfaces from the kernel.
-protocol device {
-    scan time 10; # Scan interfaces every 10 seconds
-}
-
-# The Kernel protocol is not a real routing protocol. Instead of communicating
-# with other routers in the network, it performs synchronization of BIRD's
-# routing tables with the OS kernel.
-protocol kernel {
-    metric 64;      # Use explicit kernel route metric to avoid collisions
-                    # with non-BIRD routes in the kernel routing table
-    persist;        # Don't remove routes on BIRD shutdown
-    scan time 20;   # Scan kernel routing table every 20 seconds
-    import none;
-    export all;     # Actually insert routes into the kernel routing table
-}
-
-
-protocol rip {
-    export all;
-    import all;
-    interface "*";
-}
-
-protocol static {
-        import all;
-        
-        172.16.0.0/24 via "ens2"
-}
-protocol ospf {
-    tick 10;       # The routing table calculation and clean-up of areas' databases is not performed when a single link
-                    # state change arrives. To lower the CPU utilization, it's processed later at periodical intervals of num
-                    # seconds. The default value is 1.
-    import all;
-    #export filter {
-    #        ospf_metric1 = 1000;
-    #        if source = RTS_STATIC then accept; else reject;
-    #};
-
-    area 0 {
-        networks {
-            10.0.0.0/8;
-            172.16.0.0/24;
-            192.168.1.0/24;
-        };
-        
-        interface "ens*" {
-            cost 5;
-            type broadcast;
-            hello 5; 
-            retransmit 2; 
-            wait 10; 
-            dead 20;
-        };
-
-        interface "*" {
-                cost 1000;
-                stub;
-        };
-    };
-}
-
-
-\end{lstlisting}
+\lstinputlisting[language=bash,caption={/etc/bird/bird.conf on R1}]{configs/R1/etc/bird/bird.conf}
 
 Zuerst definierten wir die ''router id'' nach Vorgabe.
 \medskip
