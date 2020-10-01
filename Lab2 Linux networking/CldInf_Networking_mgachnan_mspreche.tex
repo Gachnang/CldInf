@@ -305,7 +305,32 @@ Wir versuchten ebenfalls mit \lstinline!tcpdump! die Pakete aufzufangen. Dies kl
 
 \medskip
 
-Wir können es zwar nicht beweisen, aber anhand von der Konfiguration von Bird und OSPF haben wir definiert, dass jeweils nur die Interfaces aktiv sind, bei welchem weitere Router sind. So hat ''R1'' nur ein Interface ''ens3'' auf welches Bird reagiert. Das gleiche ist bei ''R5'' bei welchem nur das Interface ''ens2'' konfiguriert ist. Alle anderen interfaces sind als ''stub'' definiert.
+Mit TCPDump konnten wir die Pakete sehen und damit verifizieren, dass keine OSPF Pakete an das Client-, sowie Server-Netzwerk gesendet werden.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.90\textwidth]{"images/R1 OSPF Capture"}
+		\caption{R1 ens3 Capture}
+		\label{fig:R1-OSPF-Capture}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.90\textwidth]{"images/Client OSPF Capture"}
+		\caption{Client ens2 Capture}
+		\label{fig:client-OSPF-Capture}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.90\textwidth]{"images/R5 OSPF Capture"}
+		\caption{R5 ens3 Capture}
+		\label{fig:client-OSPF-Capture}
+	\end{center}
+\end{figure}
+
 
 \subsection{Access Website}
 \label{subsec:AccessWebsite}
