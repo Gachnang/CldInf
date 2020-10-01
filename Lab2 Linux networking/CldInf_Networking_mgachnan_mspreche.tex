@@ -407,13 +407,54 @@ Vom ''Client'' aus funktionierte der Zugriff auf die Webseite vom ''Server''.
 	\end{center}
 \end{figure}
 
-\section{Performanz}
-\label{sec:Performanz}
+\section{Leistung}
+\label{sec:Leistung}
 \begin{shadedquotation}
-  Provide the measurement before and after the appliance of the \lstinline!tc! commands.
-  
-  Provide the exact used \lstinline!tc! commands.
+	Provide the measurement before the appliance of the \lstinline!tc! commands and measure the performance	with iperf (iperf3)
 \end{shadedquotation}
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.90\textwidth]{"images/iperf3 R2 prefuckery"}
+		\caption{iperf3 vor Modifikation}
+		\label{fig:iperf3-R2-prefuckery}
+	\end{center}
+\end{figure}
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.90\textwidth]{"images/Ping R2 to R5 no delay"}
+		\caption{Ping R2 zu R5 ens4 vor Modifikation}
+		\label{fig:Ping-R2-to-R5-no-delay}
+	\end{center}
+\end{figure}
+
+\begin{shadedquotation}
+  Provide the measurement before and after the appliance of the \lstinline!tc! commands and provide the exact used \lstinline!tc! commands.
+\end{shadedquotation}
+  
+  \begin{figure}[H]
+  	\begin{center}
+  		\includegraphics[width=0.90\textwidth]{"images/iperf3 R2 10 packet loss"}
+  		\caption{iperf3 mit 10\% Packet loss}
+  		\label{fig:iperf3-R2-10-packet-loss}
+  	\end{center}
+  Mit einer Packetlossrate von 10\% bricht die Leistung vom Netzerk wie erwartet extrem ein und wird fast unbrauchbar. Die Bandbreite sinkt durch die verlorenen Packete von 2.6 Gbits/sec auf ca 12 MBits/sec ein.
+  \end{figure}
+  \begin{figure}[H]
+  	\begin{center}
+  		\includegraphics[width=0.90\textwidth]{"images/iperf3 R2 10ms delay 20ms jitter"}
+  		\caption{Ping R2 zu R5 ens4 vor Modifikation}
+  		\label{fig:iperf3-R2-10ms-delay-20ms-jitter}
+  	\end{center}
+  \end{figure}
+  Mit 10ms delay und 20ms jitter sind iperf3 Messungen nicht mehr Nützlich, da kaum mehr Datenübertragungen möglich sind.
+  \begin{figure}[H]
+  	\begin{center}
+  		\includegraphics[width=0.90\textwidth]{"images/Ping R2 to R5 10ms delay 20ms jitter"}
+  		\caption{Ping R2 zu R5 ens4 mit 10ms delay und 20ms jitter}
+  		\label{fig:Ping-R2-to-R5-10ms-delay-20ms-jitter}
+  	\end{center}
+  \end{figure}
+  Mit einer Verzögerung von 10ms mit einem 20ms Jitter benötigen die Pings 12ms bis 4305 ms. Je nachdem wie der Jitter pro Ping ist geht der Ping noch durch und braucht dadurch unter 100 ms oder benötigt über 4 Sekunden.
 
 \section{Referenzblatt}
 \label{sec:Referenzblatt}
@@ -455,6 +496,20 @@ Vom ''Client'' aus funktionierte der Zugriff auf die Webseite vom ''Server''.
   \hline
   \lstinline! sudo ifconfig ens* down/up ! & stellt ens* network interface ab/ein\\
   \hline
+  \lstinline! sudo tcpdump --interface <interface> ! & hört auf dem interface mit und zeigt alle pakete\\
+  \hline
+  \lstinline! curl <ip>:<port> ! & Aufruf von HTTP/HTTPS Files auf der IP und Port\\
+  \hline
+  \lstinline! sudo tcpdump --interface <interface> ! & hört auf dem interface mit und zeigt alle Pakete\\
+  \hline
+  \lstinline! iperf3 -s ! & Startet iperf3 im Server Modus\\
+  \hline
+  \lstinline! iperf3 -c <ip> ! & Startet iperf3 im Client Modus zum Server auf ip\\
+  \hline
+  \lstinline! sudo tc qdisc add/del dev <interface> root netem loss 10\% ! & 10\% der gesendeten Packete auf das Interface werden zufällig verworfen bzw. entfernt die Regel wieder\\
+  \hline
+  \lstinline! sudo tc qdisc add/del dev <interface> root netem delay 10ms 20ms ! & Fügt jedem vom interface überbrückten Paket 10 ms Verzögerung und 20 ms Jitter hinzu bzw. entfernt die Regel wieder\\
+  \hline
 \end{tabular}
 
 \section{Anhänge}
@@ -484,6 +539,10 @@ Verifikation der Routing unter \ref{sec:Verifizierung}.
 % Use the "IEEE standard" as style => "IEEEtran.bst"
 \bibliographystyle{IEEEtran}
 \endgroup  
+
+https://man7.org/linux/man-pages/man8/tc-netem.8.html
+https://sandilands.info/sgordon/dropping-packets-in-ubuntu-linux-using-tc-and-iptables
+https://iperf.fr/iperf-doc.php
 
 \section{Nachwort}
 \label{sec:Nachwort}
