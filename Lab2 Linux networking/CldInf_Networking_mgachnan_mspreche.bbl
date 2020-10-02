@@ -50,6 +50,25 @@ A.~Phillips, ``How to run a remote packet capture with wireshark and tcpdump,''
   \url{https://www.comparitech.com/net-admin/tcpdump-capture-wireshark/}
 \BIBentrySTDinterwordspacing
 
+\bibitem{PERFORMANCE-IPERF-TC}
+\BIBentryALTinterwordspacing
+``Dropping packets in ubuntu linux using tc and iptables,'' 01.09.2016.
+  [Online]. Available:
+  \url{https://sandilands.info/sgordon/dropping-packets-in-ubuntu-linux-using-tc-and-iptables}
+\BIBentrySTDinterwordspacing
+
+\bibitem{IPERF}
+\BIBentryALTinterwordspacing
+V.~GUEANT, ``iperf - iperf3 and iperf2 user documentation,'' 02.10.2020.
+  [Online]. Available: \url{https://iperf.fr/iperf-doc.php}
+\BIBentrySTDinterwordspacing
+
+\bibitem{MAN-TC}
+\BIBentryALTinterwordspacing
+``tc-netem(8) - linux manual page,'' 08.09.2020. [Online]. Available:
+  \url{https://man7.org/linux/man-pages/man8/tc-netem.8.html}
+\BIBentrySTDinterwordspacing
+
 \bibitem{BIRD_COMMAND}
 \BIBentryALTinterwordspacing
 {Tomas Filip - HIPPO {\copyright} 2004} and C.~F. {ALL: WEBarium}, ``The bird
