@@ -300,7 +300,7 @@ Vom Client aus untersuchen wir das Ergebnis:
   \begin{center}
     \includegraphics[width=0.90\textwidth]{images/firewall-after.png}
     \caption{Firewall danach}
-    \label{fig:FirewallBefore}
+    \label{fig:FirewallDanach}
   \end{center}
 \end{figure}
 
@@ -380,7 +380,7 @@ Mit TCPDump konnten wir die Pakete sehen und damit verifizieren, dass keine OSPF
 	\begin{center}
 		\includegraphics[width=0.90\textwidth]{"images/Client OSPF Capture"}
 		\caption{Client ens2 Capture}
-		\label{fig:client-OSPF-Capture}
+		\label{fig:client-OSPF-Capture-ens2}
 	\end{center}
 \end{figure}
 
@@ -388,7 +388,7 @@ Mit TCPDump konnten wir die Pakete sehen und damit verifizieren, dass keine OSPF
 	\begin{center}
 		\includegraphics[width=0.90\textwidth]{"images/R5 OSPF Capture"}
 		\caption{R5 ens3 Capture}
-		\label{fig:client-OSPF-Capture}
+		\label{fig:client-OSPF-Capture-ens3}
 	\end{center}
 \end{figure}
 
@@ -470,6 +470,7 @@ Mit 10ms delay und 20ms jitter sind iperf3 Messungen nicht mehr Nützlich, da ka
 Mit einer Verzögerung von 10ms mit einem 20ms Jitter benötigen die Pings 12ms bis 4305 ms. Je nachdem wie der Jitter pro Ping ist geht der Ping noch durch und braucht dadurch unter 100 ms oder benötigt über 4 Sekunden.
 
 \section{Man-In-The-Middle}
+\label{sec:maninthemiddle}
 \begin{shadedquotation}
 	In this last task, you’ll learn another tool, called mitmproxy. With this tool you can easily act
 	as a Man-In-The-Middle and observe and manipulate traffic. The task itself is very theoretical.
@@ -495,6 +496,8 @@ Beim Client kann nun über den Proxy zugegriffen werden, indem beim Aufrufen von
 
 Vom Client aus rufen wir den Server erneut auf, diesmal jedoch über den Proxy: \lstinline!curl --proxy 10.0.100.2:8080 192.168.1.100:8080!. (oder setzen \lstinline!export http_proxy=10.0.100.2:8080!.)
 
+\medskip
+
 Eigentlich sollte nun die definierte Antwort kommen ''<h1>Injected</h1>...'', jedoch haben wir dies nicht hinbekommen.
 Jedoch sehen wir die Verbindung, und da die Firewall eine Verbindung vom MITM aus nicht erlaubt, den time-out:
 
@@ -502,7 +505,7 @@ Jedoch sehen wir die Verbindung, und da die Firewall eine Verbindung vom MITM au
   \begin{center}
   	\includegraphics[width=0.90\textwidth]{"images/MITM_Req_timeout"}
   	\caption{MITM Timeout}
-  	\label{fig:Ping-R2-to-R5-10ms-delay-20ms-jitter}
+  	\label{fig:MITM_Req_timeout}
   \end{center}
 \end{figure}
 
@@ -510,7 +513,7 @@ Jedoch sehen wir die Verbindung, und da die Firewall eine Verbindung vom MITM au
   \begin{center}
   	\includegraphics[width=0.90\textwidth]{"images/MITM_Answer_1"}
   	\caption{Client Timeout}
-  	\label{fig:Ping-R2-to-R5-10ms-delay-20ms-jitter}
+  	\label{fig:MITM_Answer_1}
   \end{center}
 \end{figure}
 
@@ -599,13 +602,5 @@ Verifikation der Routing unter \ref{sec:Verifizierung}.
 % Use the "IEEE standard" as style => "IEEEtran.bst"
 \bibliographystyle{IEEEtran}
 \endgroup  
-
-https://blog.heckel.io/2013/07/01/how-to-use-mitmproxy-to-read-and-modify-https-traffic-of-your-phone/ - MITM maybe
-
-\section{Nachwort}
-\label{sec:Nachwort}
-
-Kein Mitglied unserer Gruppe hat CN2 besucht. Alleine bis wir \ref{subsec:BIRD} zum laufen brachten haben wir gemeinsam mehr als 30 Stunden aufgewendet. 
-
 
 \end{document}
