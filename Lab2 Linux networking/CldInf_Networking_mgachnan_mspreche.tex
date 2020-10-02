@@ -434,9 +434,9 @@ Zuerst testen wir die Performance mit \lstinline!iperf3! bevor wir Änderungen m
 	\end{center}
 \end{figure}
   
-Wir haben den Befehl \lstinline!tc! benutzt und die man-page \cite{MAN-TC} als Hilfestellung genommen. 
-
-\lstinline!TODO BEFEHL Packetlossrate!
+Wir haben den Befehl \lstinline!tc! benutzt und die man-page \cite{MAN-TC} als Hilfestellung genommen.
+Wir geben folgenden Befehl auf R3 bei ens4 ein damit wir 10\% Packetlossrate haben:\\
+tc qdisc add dev ens4 root netem loss 10\% 
 
 \begin{figure}[H]
   \begin{center}
@@ -456,7 +456,8 @@ Mit einer Packetlossrate von 10\% bricht die Leistung vom Netzwerk wie erwartet 
   \end{center}
 \end{figure}
 
-\lstinline!TODO BEFEHL Packetlossrate und jitter!
+Nachdem wir die oben genannte Regel mit del statt add als Befehl wieder entfernt haben, wollten wir noch sehen wie es mit 10s delay und 20ms jitter aussieht. Mit folgendem Befehl haben wir die Regel bei R3 ens4 eingestellt:\\
+tc qdisc add dev ens4 root netem delay 10ms 20ms
 Mit 10ms delay und 20ms jitter sind iperf3 Messungen nicht mehr Nützlich, da kaum mehr Datenübertragungen möglich sind.
 
 \begin{figure}[H]
