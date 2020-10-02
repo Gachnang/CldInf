@@ -49,6 +49,7 @@ EOF
     fi
     
     netplan apply
+    sleep 5s
     
     if [ $# -ge "1" ]; then
         ifconfig ens2 up
@@ -157,7 +158,7 @@ EOF
     # bird -R
     systemctl start bird
     birdc show status
-    systemctl status bird
+    # systemctl status bird
 }
 
 setup_firewall()
@@ -219,33 +220,29 @@ setup()
             ;;
         R1)
             setup_hostname "R1"
-            setup_ip "172.16.0.1/24" "10.0.1.1/24"
             setup_bird "1.1.1.1" "ens3" "172.16.0.0/24 via \"ens2\""
-            # "10.0.0.0/8 via \"ens3\"" 
+            setup_ip "172.16.0.1/24" "10.0.1.1/24"
             ;;
         R2)
             setup_hostname "R2"
-            setup_ip "10.0.1.2/24" "10.0.4.1/24" "10.0.2.1/24"
             setup_bird "2.2.2.2" "ens*" 
-            # "10.0.1.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.3.0/24 via \"ens4\""
+            setup_ip "10.0.1.2/24" "10.0.4.1/24" "10.0.2.1/24"
             ;;
         R3)
             setup_hostname "R3"
-            setup_ip "10.0.2.2/24" "10.0.5.1/24" "10.0.3.1/24"
             setup_bird "3.3.3.3" "ens*" 
-            #"10.0.2.0/24 via \"ens2\"" "10.0.4.0/24 via \"ens3\"" "10.0.5.0/24 via \"ens4\""
+            setup_ip "10.0.2.2/24" "10.0.5.1/24" "10.0.3.1/24"
             ;;
         R4)
             setup_hostname "R4"
+            setup_bird "4.4.4.4" "ens2,ens3" "10.0.100.0/24 via \"ens4\""
             setup_ip "10.0.4.2/24" "10.0.5.2/24" "10.0.100.1/24"
-            setup_bird "4.4.4.4" "ens*" 
             ;;
         R5)
             setup_hostname "R5"
-            setup_ip "10.0.3.2/24" "192.168.1.1/24"
             setup_bird "5.5.5.5" "ens2" "192.168.1.0/24 via \"ens3\""
-            # "10.0.0.0/8 via \"ens2\""
             setup_firewall
+            setup_ip "10.0.3.2/24" "192.168.1.1/24"
             ;;
         *)
             echo "name is unknewn..."
