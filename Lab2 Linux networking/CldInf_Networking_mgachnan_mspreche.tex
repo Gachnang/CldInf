@@ -481,26 +481,25 @@ Mit einer Verzögerung von 10ms mit einem 20ms Jitter benötigen die Pings 12ms 
 Zuerst konfigurieren und starten wir mitmproxy auf MITM.
 Um den Inhalt einer Antwort zu ersetzen, fügen wir ein kleines Python-Skript hinzu und übergeben es an mitmproxy.
 \begin{shadedquotation}
-	cat << EOF > injection.py
+	nano injection.py
 	from mitmproxy import http
 	
 	
 	def response(flow: http.HTTPFlow) -> None:
 	flow.response.content = ''<h1>Du hast gewonnen!</h1><div>Besuche totallynotascam.com und sichere dir deinen Preis!</div>''.encode(''utf-8'')
-	EOF
 	
 \end{shadedquotation}
 
 Danach kann der Proxy gestartet werden.
 \begin{shadedquotation}
-	mitmproxy -s ''injection.py''
+	mitmproxy -s injection.py
 \end{shadedquotation}
 
-Beim Client kann nun über den Proxy zugegriffen werden, indem beim Aufrufen von curl eine Umgebungsvariable festgelegt wird.
+Beim Client kann nun über den Proxy zugegriffen werden, indem beim Aufrufen von curl eine Umgebungsvariable festgelegt wird mit folgendem Befehl:
 
-TODO: insert Screenshot
+http\_proxy=10.0.100.2:8080 curl 192.168.1.100:8080
 
-Der Proxy hat erfolgreich seine eigene Antwort als Antwort eingefügt.
+Der Proxy hat nun erfolgreich seine eigene Antwort als Antwort eingefügt.
 Mitmproxy kann durch Eingabe von ''q'' gefolgt von ''y'' im CLI beendet werden.
 \newpage
 \section{Referenzblatt}
