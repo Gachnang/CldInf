@@ -1,0 +1,6 @@
+#cloud-config
+user: sysadmin
+password: cisco
+chpasswd: { expire: False }
+ssh_pwauth: True
+hostname: "ubuntu-postgres"

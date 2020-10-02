@@ -1,0 +1,11 @@
+<ospf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ospf" xmlns:ios-ospf="http://cisco.com/ns/yang/Cisco-IOS-XE-ospf"
+      xmlns:ios="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+    <id>{{ process_id }}</id>
+    {% for network in networks %}
+    <network>
+        <ip>{{ network.address }}</ip>
+        <mask>{{ network.mask }}</mask>
+        <area>{{ network.area_id }}</area>
+    </network>
+    {% endfor %}
+</ospf>

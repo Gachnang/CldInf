@@ -1,0 +1,45 @@
+---
+- hostname: "RT-3"
+  domain: "lab.ins.hsr.ch"
+  dns_lookup: 'disabled'
+  username: python
+  password: cisco
+  address: 10.3.255.103
+  interfaces:
+    loopbacks:
+      1:
+        description: "BGP loopback"
+        address: 3.3.3.3
+        mask: 255.255.255.255
+      2:
+        description: "Pseudo network"
+        address: 192.168.3.1
+        mask: 255.255.255.0
+    ethernet_links:
+      1:
+        description: "Physical connection"
+        address: 10.3.255.1
+        mask: 255.255.255.0
+  routing:
+    ospf:
+      process_id: 1
+      networks:
+        # Note: OSPF masks need to be in wildcard annotation
+        - address: 3.3.3.3
+          mask: 0.0.0.0
+          area_id: 0
+        - address: 10.3.255.0
+          mask: 0.0.0.255
+          area_id: 0
+    bgp:
+      as_number: 3
+      networks:
+        - address: 192.168.3.0
+          mask: 255.255.255.0
+        #- address: X.X.X.X
+        #  mask: 255.255.255.0
+      neighbors:
+        - address: 20.20.20.20
+          as_number: 20
+          max_hop: 2
+          loopback: 1

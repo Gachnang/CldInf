@@ -1,0 +1,21 @@
+<!-- PATCH to https://10.3.255.103/restconf/data/Cisco-IOS-XE-native:native/interface/ -->
+<interface xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native"
+           xmlns:ios="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+    <Loopback>
+        <name>1</name>
+        <ip>
+            <address>
+                <primary>
+                    <address>3.3.3.3</address>
+                    <mask>255.255.255.255</mask>
+                </primary>
+            </address>
+        </ip>
+    </Loopback>
+</interface>
+
+<!--
+
+    https://10.3.255.103/restconf/data/Cisco-IOS-XE-native:native/
+    
+ -->
