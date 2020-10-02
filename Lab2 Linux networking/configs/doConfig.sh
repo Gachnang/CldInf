@@ -141,7 +141,7 @@ protocol ospf {
             hello 9; 
             retransmit 6; 
             wait 50; 
-            dead 5;
+            dead count 5;
         };
 
         interface "*" {
