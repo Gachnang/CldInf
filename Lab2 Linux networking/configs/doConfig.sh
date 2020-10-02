@@ -166,7 +166,7 @@ setup_firewall()
 {
     nft add rule ip filter input ip saddr . ip daddr { 172.16.0.0/24 . 192.168.1.0/24 } counter accept
     echo "Setup firewall"
-    cat <<EOF > '/etc/nftable.conf'
+    cat <<EOF > '/etc/nftables.conf'
 #!/usr/sbin/nft -f
 # This file is generated from information provided by $0
 
