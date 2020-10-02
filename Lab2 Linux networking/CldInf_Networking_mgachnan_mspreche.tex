@@ -243,7 +243,7 @@ Wir haben eine Vorlage aus dem Internet übernommen \cite{BIRD_EXAMPLE} und die 
 \subsection{IP Forwarding}
 \label{subsec:IPForwarding}
 
-''IP-Forwarding'' ist standartgemäs ausgeschaltet. Mit \lstinline!sysctl net.ipv4.ip_forward=1! aktivieren wird das weiterleiten der Packete erlaubt.
+''IP-Forwarding'' ist standardmässig ausgeschaltet. Mit \lstinline!sysctl net.ipv4.ip_forward=1! aktivieren wird das weiterleiten der Packete erlaubt.
 
 \subsection{Firewall}
 \label{subsec:Firewall}
@@ -483,8 +483,6 @@ Um den Inhalt einer Antwort zu ersetzen, fügen wir ein kleines Python-Skript hi
 \begin{shadedquotation}
 	nano injection.py
 	from mitmproxy import http
-	
-	
 	def response(flow: http.HTTPFlow) -> None:
 	flow.response.content = ''<h1>Du hast gewonnen!</h1><div>Besuche totallynotascam.com und sichere dir deinen Preis!</div>''.encode(''utf-8'')
 	
