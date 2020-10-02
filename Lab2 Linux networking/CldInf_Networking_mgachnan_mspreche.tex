@@ -469,6 +469,39 @@ Mit 10ms delay und 20ms jitter sind iperf3 Messungen nicht mehr Nützlich, da ka
 
 Mit einer Verzögerung von 10ms mit einem 20ms Jitter benötigen die Pings 12ms bis 4305 ms. Je nachdem wie der Jitter pro Ping ist geht der Ping noch durch und braucht dadurch unter 100 ms oder benötigt über 4 Sekunden.
 
+\section{Man-In-The-Middle}
+\begin{shadedquotation}
+	In this last task, you’ll learn another tool, called mitmproxy. With this tool you can easily act
+	as a Man-In-The-Middle and observe and manipulate traffic. The task itself is very theoretical.
+	You have to forge the website on the fly. The client requests the website and you inject the reply
+	with the MITM virtual machine. To do so, the client has to use the MITM computer as a proxy.
+	You can do that explicitly, although normally an attacker would force the user to use the proxy
+	in a transparent way (so that the user does not notice any attack).
+\end{shadedquotation}
+Zuerst konfigurieren und starten wir mitmproxy auf MITM.
+Um den Inhalt einer Antwort zu ersetzen, fügen wir ein kleines Python-Skript hinzu und übergeben es an mitmproxy.
+\begin{shadedquotation}
+	cat << EOF > injection.py
+	from mitmproxy import http
+	
+	
+	def response(flow: http.HTTPFlow) -> None:
+	flow.response.content = ''<h1>Du hast gewonnen!</h1><div>Besuche totallynotascam.com und sichere dir deinen Preis!</div>''.encode(''utf-8'')
+	EOF
+	
+\end{shadedquotation}
+
+Danach kann der Proxy gestartet werden.
+\begin{shadedquotation}
+	mitmproxy -s ''injection.py''
+\end{shadedquotation}
+
+Beim Client kann nun über den Proxy zugegriffen werden, indem beim Aufrufen von curl eine Umgebungsvariable festgelegt wird.
+
+TODO: insert Screenshot
+
+Der Proxy hat erfolgreich seine eigene Antwort als Antwort eingefügt.
+Mitmproxy kann durch Eingabe von ''q'' gefolgt von ''y'' im CLI beendet werden.
 \newpage
 \section{Referenzblatt}
 \label{sec:Referenzblatt}
