@@ -91,7 +91,8 @@ protocol kernel {
                     # with non-BIRD routes in the kernel routing table
     persist;        # Don't remove routes on BIRD shutdown
     scan time 20;   # Scan kernel routing table every 20 seconds
-#    import none;    # Default is import all
+    import all;     # Default is import all
+    learn;
     export all;     # Actually insert routes into the kernel routing table
 }
 
@@ -103,7 +104,7 @@ protocol rip {
 }
 
 protocol static {
-        import all;
+    import all;
 
 EOF
     
@@ -123,10 +124,7 @@ protocol ospf {
                     # state change arrives. To lower the CPU utilization, it's processed later at periodical intervals of num
                     # seconds. The default value is 1.
     import all;
-    #export filter {
-    #        ospf_metric1 = 1000;
-    #        if source = RTS_STATIC then accept; else reject;
-    #};
+    export all;
 
     area 0 {
         networks {
@@ -153,9 +151,9 @@ protocol ospf {
 
 EOF
     sysctl net.ipv4.ip_forward=1
-    ip route flush table main
     bird -p
     birdc down
+    ip route flush table main    
     # bird -R
     systemctl start bird
     birdc show status
@@ -199,9 +197,8 @@ setup_MITM()
     cat <<EOF > '/home/ins/injection.py'
 from mitmproxy import http
 
-
 def response(flow: http.HTTPFlow) -> None:
-flow.response.content = ''<h1>Injected</h1><div>Injected by MITM!</div>''.encode(''utf-8'')
+flow.response.content = "<h1>Injected</h1><div>Injected by MITM!</div>".encode("utf-8")
 EOF
 }
 
