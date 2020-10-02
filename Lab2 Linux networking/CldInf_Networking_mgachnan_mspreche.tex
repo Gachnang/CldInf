@@ -478,26 +478,42 @@ Mit einer Verzögerung von 10ms mit einem 20ms Jitter benötigen die Pings 12ms 
 	You can do that explicitly, although normally an attacker would force the user to use the proxy
 	in a transparent way (so that the user does not notice any attack).
 \end{shadedquotation}
+
 Zuerst konfigurieren und starten wir mitmproxy auf MITM.
 Um den Inhalt einer Antwort zu ersetzen, fügen wir ein kleines Python-Skript hinzu und übergeben es an mitmproxy.
-\begin{shadedquotation}
-	nano injection.py
-	from mitmproxy import http
-	def response(flow: http.HTTPFlow) -> None:
-	flow.response.content = ''<h1>Du hast gewonnen!</h1><div>Besuche totallynotascam.com und sichere dir deinen Preis!</div>''.encode(''utf-8'')
-	
-\end{shadedquotation}
 
-Danach kann der Proxy gestartet werden.
-\begin{shadedquotation}
-	mitmproxy -s injection.py
-\end{shadedquotation}
+\begin{lstlisting}[language=bash,caption={injection.py}]
+from mitmproxy import http
+
+def response(flow: http.HTTPFlow) -> None:
+flow.response.content = "<h1>Injected</h1><div>Injected by MITM!</div>".encode("utf-8")
+\end{lstlisting}
+
+Danach kann der Proxy auf MITM gestartet werden mit dem Befehl \lstinline!mitmproxy -s injection.py!.
 
 Beim Client kann nun über den Proxy zugegriffen werden, indem beim Aufrufen von curl eine Umgebungsvariable festgelegt wird mit folgendem Befehl:
 
-http\_proxy=10.0.100.2:8080 curl 192.168.1.100:8080
+Vom Client aus rufen wir den Server erneut auf, diesmal jedoch über den Proxy: \lstinline!curl --proxy 10.0.100.2:8080 192.168.1.100:8080!. (oder setzen \lstinline!export http_proxy=10.0.100.2:8080!.)
 
-Mitmproxy kann durch Eingabe von ''q'' gefolgt von ''y'' im CLI beendet werden.
+Eigentlich sollte nun die definierte Antwort kommen ''<h1>Injected</h1>...'', jedoch haben wir dies nicht hinbekommen.
+Jedoch sehen wir die Verbindung, und da die Firewall eine Verbindung vom MITM aus nicht erlaubt, den time-out:
+
+\begin{figure}[H]
+  \begin{center}
+  	\includegraphics[width=0.90\textwidth]{"images/MITM_Req_timeout"}
+  	\caption{MITM Timeout}
+  	\label{fig:Ping-R2-to-R5-10ms-delay-20ms-jitter}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+  	\includegraphics[width=0.90\textwidth]{"images/MITM_Answer_1"}
+  	\caption{Client Timeout}
+  	\label{fig:Ping-R2-to-R5-10ms-delay-20ms-jitter}
+  \end{center}
+\end{figure}
+
 \newpage
 \section{Referenzblatt}
 \label{sec:Referenzblatt}
