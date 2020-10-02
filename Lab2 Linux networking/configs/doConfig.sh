@@ -194,6 +194,17 @@ EOF
     nft -f /etc/nftables.conf
 }
 
+setup_MITM() 
+{
+    cat <<EOF > '/home/ins/injection.py'
+from mitmproxy import http
+
+
+def response(flow: http.HTTPFlow) -> None:
+flow.response.content = ''<h1>Injected</h1><div>Injected by MITM!</div>''.encode(''utf-8'')
+EOF
+}
+
 setup()
 {
     echo "Start setup for '$1'"
@@ -207,6 +218,7 @@ setup()
             setup_hostname "MITM"
             setup_ip "10.0.100.2/24"
             echo "            gateway4: 10.0.100.1" >> '/etc/netplan/50-cloud-init.yaml'
+            setup_MITM
             ;;
         R1)
             setup_hostname "R1"
