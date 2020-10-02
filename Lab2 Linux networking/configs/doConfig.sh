@@ -49,7 +49,9 @@ EOF
     fi
     
     netplan apply
-    sleep 5s
+    sleep 3s
+    echo "Pleas klick any key to start all interfaces!"
+    read -n 1
     
     if [ $# -ge "1" ]; then
         ifconfig ens2 up
@@ -211,6 +213,8 @@ setup()
             setup_hostname "Client"
             setup_ip "172.16.0.2/24"
             echo "            gateway4: 172.16.0.1" >> '/etc/netplan/50-cloud-init.yaml'
+            # geht meist ohne, manchal nicht ohne.... . .. . ,. . . 
+            ip route add 10.0.0.0/8 via 172.16.0.1
             ;;
         MITM)
             setup_hostname "MITM"
