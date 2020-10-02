@@ -1,0 +1,14 @@
+<Loopback xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native" xmlns:ios="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+    <name>{{ name }}</name>
+    {% if description %}
+    <description>{{ description }}</description>
+    {% endif %}
+    <ip>
+        <address>
+            <primary>
+                <address>{{ address }}</address>
+                <mask>{{ mask }}</mask>
+            </primary>
+        </address>
+    </ip>
+</Loopback>

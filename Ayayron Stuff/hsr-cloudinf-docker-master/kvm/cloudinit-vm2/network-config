@@ -1,0 +1,12 @@
+---
+version: 2
+ethernets:
+  ens2:
+    addresses:
+      - 10.2.0.20/24
+  ens3:
+    dhcp4: True
+    nameservers:
+      addresses:
+        - 152.96.120.53
+        - 152.96.120.54

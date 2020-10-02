@@ -1,0 +1,22 @@
+# Reference: https://docs.docker.com/compose/compose-file/
+version: '3.7'
+services:
+  db:
+    image: "postgres:10.10"
+    ports:
+      - ${DATABASE_HOST}:${DATABASE_PORT}:5432
+    volumes:
+      - "db_log:/var/log"
+      - "db_data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: "${DATABASE_USER}"
+      POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
+      POSTGRES_DB: "${DATABASE_NAME}"
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 512M
+volumes:
+  db_log:
+  db_data:

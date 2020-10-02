@@ -1,0 +1,80 @@
+# Reference: https://docs.docker.com/compose/compose-file/
+version: '3.7'
+services:
+  proxy:
+    image: "traefik:v2.0"
+    ports:
+      - ${PROXY_INTERFACE}:8080:80
+      - ${PROXY_INTERFACE}:8443:443
+    networks:
+      - default
+      - frontend
+    command: 
+      - "--global.sendAnonymousUsage=false"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.https.address=:443"
+      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
+      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=http"
+      - "--certificatesresolvers.myhttpchallenge.acme.email=${PROXY_EMAIL}"
+      - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
+    volumes:
+      - "proxy_data:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+  web:
+    build: 
+      context: ./web
+      target: "development"
+    image: "web:latest"
+    networks:
+      - frontend
+      - backend
+    environment:
+      API_HOST: "${WEB_API_HOST}"
+      PORT: "${WEB_PORT}"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=${WEB_PORT}"
+      - "traefik.docker.network=frontend"
+      # HTTP setup
+      - "traefik.http.routers.web.entrypoints=http"
+      - "traefik.http.routers.web.middlewares=redirectHttps"
+      # Note: This will also redirect future services
+      - "traefik.http.routers.web.rule=HostRegexp(`{any:.*}`)"
+      - "traefik.http.middlewares.redirectHttps.redirectscheme.scheme=https"
+      # HTTPS setup
+      - "traefik.http.routers.websecure.rule=Host(`${PROXY_DOMAIN}`)"
+      - "traefik.http.routers.websecure.entrypoints=https"
+      - "traefik.http.routers.websecure.tls.certresolver=myhttpchallenge"
+  api:
+    build: 
+      context: ./api
+      target: "development"
+    image: "api:latest"
+    networks:
+      - backend
+    environment:
+      DB: "postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}"
+      PORT: "${API_PORT}"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+  proxy_data:
+networks:
+  frontend:
+    name: frontend
+  backend:
+    name: backend

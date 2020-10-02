@@ -1,0 +1,23 @@
+<bgp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-bgp" xmlns:ios-bgp="http://cisco.com/ns/yang/Cisco-IOS-XE-bgp"
+     xmlns:ios="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+    <id>{{ as_number }}</id>
+    {% for neighbor in neighbors %}
+    <neighbor>
+        <id>{{ neighbor.address }}</id>
+        <remote-as>{{ neighbor.as_number }}</remote-as>
+        <ebgp-multihop>
+            <max-hop>{{ neighbor.max_hop or 2  }}</max-hop>
+        </ebgp-multihop>
+        <update-source>
+            <Loopback>{{ neighbor.loopback or 1 }}</Loopback>
+        </update-source>
+    </neighbor>
+    {% endfor %}
+
+    {% for network in networks %}
+    <network>
+        <number>{{ network.address }}</number>
+        <mask>{{ network.mask }}</mask>
+    </network>
+    {% endfor %}
+</bgp>
