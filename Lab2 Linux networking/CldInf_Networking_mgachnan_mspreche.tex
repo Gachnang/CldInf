@@ -199,7 +199,7 @@ Die Adressen sind so definiert, dass jede Verbindung ein eigenes Subnet hat. Bir
 
 Wir ändern den netplan mit \lstinline!sudo nano /etc/netplan/50-cloud-init.yaml!.
 
-\lstinputlisting[language=bash,caption={/etc/netplan/50-cloud-init.yaml on R1}]{configs/R1/etc/netplan/50-cloud-init.yaml}
+\lstinputlisting[language=bash,caption={/etc/netplan/50-cloud-init.yaml on R1}]{configs/R1/netplan/50-cloud-init.yaml}
 
 Mit \lstinline!netplan apply! übernehmen wir die neu definierten IP-Adressen.
 
@@ -218,7 +218,7 @@ Wir definieren die Configuration von Bird indem wir ''/etc/bird/bird.conf'' anpa
 
 Um die Auslastung von CPU und Netzwerk zu vermindern, haben wir uns an \cite{ReducingBGP} orientiert.
 
-\lstinputlisting[language=bash,caption={/etc/bird/bird.conf on R1}]{configs/R1/etc/bird/bird.conf}
+\lstinputlisting[language=bash,caption={/etc/bird/bird.conf on R1}]{configs/R1/bird/bird.conf}
 
 Zuerst definierten wir die ''router id'' nach Vorgabe.
 \medskip
@@ -291,7 +291,7 @@ Anschliessend darf von ''172.16.0.0/24'' nach ''192.168.1.0/24'' nur Packete, di
 
 Zum Schluss verwerfen wir explicit alle ''ICMP'' (Pings, Zeile 16). Diese Zeile kann auch weggelassen werden, wurde aber für die vollständigkeit ergänzt.
 
-\lstinputlisting[language=bash,caption={/etc/nftables.conf on R5}]{configs/R5/etc/nftables.conf}
+\lstinputlisting[language=bash,caption={/etc/nftables.conf on R5}]{configs/R5/nftables.conf}
 
 Die neue Konfiguration übernehmen wir mit dem Befehl \lstinline!nft -f /etc/nftables.conf!.
 
@@ -484,12 +484,8 @@ Mit einer Verzögerung von 10ms mit einem 20ms Jitter benötigen die Pings 12ms 
 Zuerst konfigurieren und starten wir mitmproxy auf MITM.
 Um den Inhalt einer Antwort zu ersetzen, fügen wir ein kleines Python-Skript hinzu und übergeben es an mitmproxy.
 
-\begin{lstlisting}[language=bash,caption={injection.py}]
-from mitmproxy import http
 
-def response(flow: http.HTTPFlow) -> None:
-flow.response.content = "<h1>Injected</h1><div>Injected by MITM!</div>".encode("utf-8")
-\end{lstlisting}
+\lstinputlisting[language=python,caption={injection.py on MITM}]{configs/MITM/injection.py}
 
 Danach kann der Proxy auf MITM gestartet werden mit dem Befehl \lstinline!mitmproxy -s injection.py!.
 
@@ -591,6 +587,8 @@ Jedoch sehen wir die Verbindung, und da die Firewall eine Verbindung vom MITM au
 \end{shadedquotation}
 Erarbeitung der BIRD-config ist im \ref{subsec:BIRD} erläutert.
 Verifikation der Routing unter \ref{sec:Verifizierung}.
+
+Alle erarbeiteten Configs sind im Ordner ''configs'' neben dieser PDF-Datei zu finden. Jeder Container hat darin einen eigenen Unterordner. Der Script welche alle Configs generiert ist dort ebenfalls zu finden.
 
 \subsection{Quellennachweis}
 \label{subsec:Quellennachweis}
