@@ -1,0 +1,138 @@
+version: "1.0"
+hosts:
+  Spine1:
+    image: nxosv9000
+    coordinates:
+      x: -424
+      y: -362
+    interfaces:
+      - connects: internet:0
+      - connects: Leaf1:1
+      - connects: Leaf2:1
+      - connects: Leaf3:1
+      - connects: Leaf4:1
+    running_config: ""
+  Spine2:
+    image: nxosv9000
+    coordinates:
+      x: -143
+      y: -361
+    interfaces:
+      - connects: internet:2
+      - connects: Leaf1:2
+      - connects: Leaf2:2
+      - connects: Leaf3:2
+      - connects: Leaf4:2
+    running_config: ""
+  Leaf1:
+    image: nxosv9000
+    coordinates:
+      x: -744
+      y: -47
+    interfaces:
+      - connects: internet:1
+      - connects: Spine1:1
+      - connects: Spine2:1
+      - connects: Server1-1:0
+    running_config: ""
+  Server1-1:
+    image: hsrnetwork/network-ninja
+    coordinates:
+      x: -742
+      y: 111
+    interfaces:
+      - connects: Leaf1:3
+        ipv4address: 172.21.140.10/24
+        ipv4gateway: 172.21.140.1
+  internet:
+    image: internet
+    coordinates:
+      x: -968
+      y: -316
+    interfaces:
+      - connects: Spine1:0
+      - connects: Leaf1:0
+      - connects: Spine2:0
+      - connects: Leaf2:0
+      - connects: Leaf3:0
+      - connects: Leaf4:0
+  Leaf2:
+    image: nxosv9000
+    coordinates:
+      x: -450
+      y: -45
+    interfaces:
+      - connects: internet:3
+      - connects: Spine1:2
+      - connects: Spine2:2
+      - connects: Server2-1:0
+      - connects: Server2-2:0
+    running_config: ""
+  Leaf3:
+    image: nxosv9000
+    coordinates:
+      x: -162
+      y: -38
+    interfaces:
+      - connects: internet:4
+      - connects: Spine1:3
+      - connects: Spine2:3
+      - connects: Server3-1:0
+    running_config: ""
+  Leaf4:
+    image: nxosv9000
+    coordinates:
+      x: 133
+      y: -38
+    interfaces:
+      - connects: internet:5
+      - connects: Spine1:4
+      - connects: Spine2:4
+      - connects: Server4-1:0
+      - connects: Server4-2:0
+    running_config: ""
+  Server2-1:
+    image: hsrnetwork/network-ninja
+    coordinates:
+      x: -450
+      y: 115
+    interfaces:
+      - connects: Leaf2:3
+        ipv4address: 172.21.140.20/24
+        ipv4gateway: 172.21.140.1
+  Server3-1:
+    image: hsrnetwork/network-ninja
+    coordinates:
+      x: -160
+      y: 112
+    interfaces:
+      - connects: Leaf3:3
+        ipv4address: 172.21.140.30/24
+        ipv4gateway: 172.21.140.1
+  Server4-1:
+    image: hsrnetwork/network-ninja
+    coordinates:
+      x: 132
+      y: 122
+    interfaces:
+      - connects: Leaf4:3
+        ipv4address: 172.21.140.40/24
+        ipv4gateway: 172.21.140.1
+  Server2-2:
+    image: hsrnetwork/network-ninja
+    coordinates:
+      x: -371
+      y: 115
+    interfaces:
+      - connects: Leaf2:4
+        ipv4address: 172.21.141.10/24
+        ipv4gateway: 172.21.141.1
+  Server4-2:
+    image: hsrnetwork/network-ninja
+    coordinates:
+      x: 210
+      y: 123
+    interfaces:
+      - connects: Leaf4:4
+        ipv4address: 172.21.141.20/24
+        ipv4gateway: 172.21.141.1

@@ -1,0 +1,98 @@
+version: "1.0"
+hosts:
+  R1:
+    image: cloudinf_ubuntu_v2
+    coordinates:
+      x: -296
+      y: -260
+    interfaces:
+      - connects: Client:0
+        ipv4address: ""
+        ipv4gateway: ""
+      - connects: R2:0
+        ipv4address: ""
+        ipv4gateway: ""
+  R2:
+    image: cloudinf_ubuntu_v2
+    coordinates:
+      x: -86
+      y: -259
+    interfaces:
+      - connects: R1:1
+        ipv4address: ""
+        ipv4gateway: ""
+      - connects: R4:0
+        ipv4address: ""
+        ipv4gateway: ""
+      - connects: R3:0
+        ipv4address: ""
+        ipv4gateway: ""
+  R3:
+    image: cloudinf_ubuntu_v2
+    coordinates:
+      x: 146
+      y: -261
+    interfaces:
+      - connects: R2:2
+        ipv4address: ""
+        ipv4gateway: ""
+      - connects: R4:1
+        ipv4address: ""
+        ipv4gateway: ""
+      - connects: R5:0
+        ipv4address: ""
+        ipv4gateway: ""
+  R4:
+    image: cloudinf_ubuntu_v2
+    coordinates:
+      x: 36
+      y: -83
+    interfaces:
+      - connects: R2:1
+        ipv4address: ""
+        ipv4gateway: ""
+      - connects: R3:1
+        ipv4address: ""
+        ipv4gateway: ""
+      - connects: MITM:0
+        ipv4address: ""
+        ipv4gateway: ""
+  R5:
+    image: cloudinf_ubuntu_v2
+    coordinates:
+      x: 365
+      y: -261
+    interfaces:
+      - connects: R3:2
+        ipv4address: ""
+        ipv4gateway: ""
+      - connects: python-flask-hello:0
+        ipv4address: ""
+        ipv4gateway: ""
+  Client:
+    image: cloudinf_ubuntu_v2
+    coordinates:
+      x: -294
+      y: 51
+    interfaces:
+      - connects: R1:0
+        ipv4address: ""
+        ipv4gateway: ""
+  MITM:
+    image: cloudinf_ubuntu_v2
+    coordinates:
+      x: 39
+      y: 53
+    interfaces:
+      - connects: R4:2
+        ipv4address: ""
+        ipv4gateway: ""
+  python-flask-hello:
+    image: mrbarker/python-flask-hello
+    coordinates:
+      x: 366
+      y: 50
+    interfaces:
+      - connects: R5:1
+        ipv4address: 192.168.1.100/24
+        ipv4gateway: 192.168.1.1
