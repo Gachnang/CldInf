@@ -140,11 +140,86 @@
 \let\SubSectionOriginal\subsection
 \renewcommand\subsection[1]{\par\medskip\SubSectionOriginal{#1}}
 
-\section{Flood and Learn}
-\label{sec:FloodAndLearn}
-This section contains the information in order to configure the virtualization technique VXLAN with the Flood and Learn approach.
-In the following Figure you can see the topology of the network. The same topology is used in both use cases (flood and learn, evpn). However in the Flood and Learn approach only the
-clients inside VLAN 140 are used.
+\section{Config}
+\label{sec:Config}
+Prüfe die OSPF Einstellung bei Spine-1
+\begin{shadedquotation}
+	show ip route ospf \\
+	ping 10.0.128.5
+\end{shadedquotation}
+Prüfe die OSPF Einstellung bei Spine-2
+\begin{shadedquotation}
+	show ip route ospf \\
+	ping 10.0.0.21
+\end{shadedquotation}
+\subsubsection{Flood and Learn}
+\begin{enumerate}
+	\item Configure Multicast: The first step is it to configure PIM-ASM with a rendez-vous point on the spine switches.
+	\begin{itemize}
+		\item use the spines loopback 1 as rendez-vous point
+		\item configure Spine and Leaf interfaces for PIM
+	\end{itemize}
+	Spine-1
+	\begin{shadedquotation}
+		configure terminal \\
+		feature pim \\
+		interface loopback1 \\
+		ip pim sparse-mode \\
+		ip pim RP-address 192.168.0.100 \\
+		interface ethernet1/1-4 \\
+		ip pim sparse-mode \\
+	\end{shadedquotation}
+	Spine-2
+	\begin{shadedquotation}
+		feature pim \\
+		interface loopback1 \\
+		ip pim sparse-mode \\
+		ip pim RP-address 192.168.0.100 \\
+		interface ethernet1/1-4 \\
+		ip pim sparse-mode
+	\end{shadedquotation}
+	Leaf1-4
+	\begin{shadedquotation}
+		feature pim \\
+		interface Ethernet1/1-2 \\
+		ip pim sparse-mode \\
+		ip pim RP-address 192.168.0.100 \\
+		interface loopback1 \\
+		ip pim sparse-mode
+	\end{shadedquotation}
+	Überprüfe Multicast
+	\begin{shadedquotation}
+		show ip mroute \\
+		show ip pim neighbor \\
+	\end{shadedquotation}
+\item The next step will be the creation of the VLANs and the virtual network identifiers. The VNIs need to be linked to the VLANs. Use the VLAN-ID 140 and as VNI 50140.
+	\begin{shadedquotation}
+		feature vn-segment-vlan-based \\
+		vlan 140 \\
+		vn-segment 50140
+	\end{shadedquotation}
+\item Now you have to create the VXLAN tunnel interfaces. Don’t forget to add the tunnel endpoints to the VNI and multicast group. All VTEPs in VLAN 140 should belong to the multicast-group 239.0.0.140. \\
+	Erstelle VXLAN auf allen Leafes
+	\begin{shadedquotation}
+		feature nv overlay \\
+		interface nve1 \\
+		source-interface loopback1 \\
+		member vni 50140 mcast-group 239.0.0.140 \\
+		no shutdown
+	\end{shadedquotation}
+	Kontrolle
+	\begin{shadedquotation}
+		show nve peers detail \\
+		show nve vni 50140
+	\end{shadedquotation}
+\end{enumerate}
+
+\subsection{eVPN}
+
+
+
+\subsection{Fragen}
+\label{sec:Fragen}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\linewidth]{images/topology}
@@ -161,17 +236,6 @@ provide step by step what you have to do but not how to configure it. So it’s 
 up the needed commands and should also be able to explain why that piece of configuration is needed. You don’t have to configure new interfaces or any underlay routing. That part of the
 configuration is provided. The following steps shall be used as a guideline to implement VXLAN.
 
-\begin{shadedquotation}
-	\begin{enumerate}
-		\item Configure Multicast: The first step is it to configure PIM-ASM with a rendez-vous point on the spine switches.
-		\begin{itemize}
-			\item use the spines loopback 1 as rendez-vous point
-			\item configure Spine and Leaf interfaces for PIM
-	\end{itemize}
-		\item The next step will be the creation of the VLANs and the virtual network identifiers. The VNIs need to be linked to the VLANs. Use the VLAN-ID 140 and as VNI 50140.
-		\item Now you have to create the VXLAN tunnel interfaces. Don’t forget to add the tunnel endpoints to the VNI and multicast group. All VTEPs in VLAN 140 should belong to the multicast-group 239.0.0.140.
-  \end{enumerate}
-\end{shadedquotation}
 
 \subsection{Verification}
 \label{subsec:Verification}
@@ -203,7 +267,7 @@ You have already seen how VXLAN together with multicast allows us to expand a la
 The following figure displays the same topology as in the Flood and Learn approach. In the EVPN configuration you will also enable the clients to ping between different VLANs, so you will use all servers.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\linewidth]{"images/topology eVPN"}
+	\includegraphics[width=0.9\linewidth]{images/topology}
 	\caption{Network topology}
 	\label{fig:topology-evpn}
 \end{figure}
