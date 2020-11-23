@@ -1,3 +1,6 @@
 [submodule "Lab4 Docker"]
 	path = Lab4 Docker
 	url = https://gitlab.ost.ch/ins/cloudinf/kvm-docker/hs2020/g20/lab4-docker.git
+[submodule "Lab5 Kubernetes"]
+	path = Lab5 Kubernetes
+	url = https://gitlab.ost.ch/ins/cloudinf/kvm-docker/hs2020/g20/lab5-kubernetes.git
